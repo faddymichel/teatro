@@ -1,11 +1,9 @@
 {
-  "name": "bostagy",
+  "name": "pass",
   "version": "1.0.0",
   "author": "Faddy Michel Samaan <faddy.michel@gmail.com>",
   "dependencies": {
     "ws": "^7.2.0"
   },
-  "bin": {
-    "bostagy": "./cli.js"
-  }
+  "bin": "./cli.js"
 }
