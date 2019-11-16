@@ -15,13 +15,13 @@ port: args [ '--port' ] || 1313
 
 server .on ( 'listening', () => {
 
-console .log ( 'Bostagy:', 'listening ...' );
+console .log ( 'pass:', 'listening ...' );
 
 } );
 
 server .on ( 'connection', ( socket, request ) => {
 
-console .log ( 'Bostagy:', 'connected to a new client ...' );
+console .log ( 'pass:', 'connected to a new client ...' );
 
 socket .on ( 'message', ( data ) => {
 
