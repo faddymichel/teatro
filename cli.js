@@ -2,38 +2,21 @@
 
 'use strict';
 
-const args = require ( './args' );
+const server = require ( 'server' );
 
-const ws = require ( 'ws' );
+process .on ( 'SIGINT', ()=> {
 
-const server = new ws .Server ( {
+console .log ( 'closing server ...' );
 
-host: args [ '--host' ] || 'localhost',
-port: args [ '--port' ] || 1313
+server .close ( () => {
 
-} );
+server .passes .forEach ( ( pass ) => {
 
-server .on ( 'listening', () => {
+pass .kill ();
 
-console .log ( 'pass:', 'listening ...' );
-
-} );
-
-server .on ( 'connection', ( socket, request ) => {
-
-console .log ( 'pass:', 'connected to a new client ...' );
-
-socket .on ( 'message', ( data ) => {
-
-process .stdout .write ( data );
+console .log ( 'killed Pass:', pass .pid, '...' );
 
 } );
-
-process .stdin .setEncoding ( 'utf8' );
-process .stdin .on ( 'data', ( data ) => {
-
-console .log ( data );
-socket .send ( data );
 
 } );
 
