@@ -27,7 +27,7 @@ button .type = 'button';
 button .value = 'Enter';
 footer .appendChild ( button );
 
-const ws = new WebSocket ( 'ws://localhost:1313?pass=cat -' );
+const ws = new WebSocket ( 'ws://localhost:1313' );
 
 ws .onerror = ( event ) => {
 
