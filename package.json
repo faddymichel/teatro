@@ -1,9 +1,32 @@
 {
-  "name": "pass",
+  "name": "teatro",
   "version": "1.0.0",
+  "description": "WebSocket Tickets to Teatro Plays",
   "author": "Faddy Michel Samaan <faddy.michel@gmail.com>",
+  "main": "./module/index.js",
   "dependencies": {
-    "ws": "^7.2.0"
+    "ws": "^7.2.0",
+    "yargs": "^15.0.2"
   },
-  "bin": "./cli.js"
+  "bin": "./cli.js",
+  "keywords": [
+    "ws",
+    "websocket",
+    "linux",
+    "unix",
+    "shell",
+    "bash",
+    "process",
+    "spawn",
+    "child process",
+    "subprocess",
+    "command"
+  ],
+  "homepage": "https://github.com/psmd13/pass",
+  "bugs": "https://github.com/psmd13/pass/issues",
+  "license": "MIT",
+  "files": [
+    "./cli.js",
+    "./module/*.js"
+  ]
 }
