@@ -2,22 +2,12 @@
 
 'use strict';
 
-const server = require ( 'server' );
+const teatro = require ( './' );
 
-process .on ( 'SIGINT', ()=> {
+console .log ( teatro );
 
-console .log ( 'closing server ...' );
+teatro .on ( 'host', ( host ) => {
 
-server .close ( () => {
-
-server .passes .forEach ( ( pass ) => {
-
-pass .kill ();
-
-console .log ( 'killed Pass:', pass .pid, '...' );
-
-} );
-
-} );
+console .log ( '#ticket', 'host', host );
 
 } );
