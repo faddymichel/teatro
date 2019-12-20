@@ -1,9 +1,9 @@
 const EventEmitter = require ( 'events' );
  
-const Ticket = function Ticket () {
+const Ticket = module .exports = function Ticket () {
 
 EventEmitter .call ( this );
-
+ 
 };
 
 Ticket .prototype = Object .create ( EventEmitter .prototype );

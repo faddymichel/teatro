@@ -1,10 +1,6 @@
 const descriptor = module .exports;
 
-const play = descriptor .value = function play ( role ) {
-
-return book [ role ] ? book [ role ] : false;
-
-};
+const play = descriptor .value = {};
 
 [
 

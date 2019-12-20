@@ -25,6 +25,7 @@
   "license": "MIT",
   "files": [
     "./cli.js",
+"./argv.js",
     "./module/*.js",
 "./browser/*"
   ],

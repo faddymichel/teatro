@@ -4,13 +4,21 @@ descriptor .value = function seat () {
 
 const teatro = this;
 
-teatro .server .on ( 'connection', function checkId ( socket ) {
+teatro .server .on ( 'connection', function checkStamp ( socket ) {
 
 socket .send ( '?ticket' );
 
-socket .once ( 'message', ( id ) => {
+socket .once ( 'message', ( stamp ) => {
 
-const ticket = teatro .Ticket ( id );
+stamp = stamp
+.trim ()
+.toString ( 'hex' );
+
+const ticket = teatro .ticket ( {
+
+stamp: stamp
+
+} ) .ticket;
 
 if ( ticket )
 ticket .play ( socket );
@@ -19,7 +27,7 @@ else {
 
 socket .send ( '#false' );
 
-checkId ( socket );
+checkStamp ( socket );
 
 }
 

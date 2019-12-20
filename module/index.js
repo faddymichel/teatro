@@ -1,5 +1,4 @@
 const EventEmitter = require ( 'events' );
- const argv = require ( './argv' );
 const ws = require ( 'ws' );
 
 const Teatro = module .exports = function Teatro ( options ) {
@@ -36,7 +35,7 @@ writable: true
 [
 
 'play',
-'Ticket',
+'ticket',
 'host',
 'seat'
 
@@ -45,5 +44,3 @@ writable: true
 Object .defineProperty ( Teatro .prototype, property, require ( './' + property ) );
 
 } );
- 
-module .exports = new Teatro ( argv );

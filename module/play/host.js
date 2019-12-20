@@ -16,11 +16,22 @@ const argv = data .split ( ' ' );
 
 const subprocess = spawn ( argv [ 0 ], argv .slice [ 1 ] );
 
-const actor = play ( 'actor', socket, subprocess );
-const audience = play ( 'audience', socket, subprocess );
+console .log ( ticket );
 
-socket .send ( '#actor ' + teatro .Ticket .issue ( actor ) );
-socket .send ( '#audience ' + teatro .Ticket .issue ( audience ) );
+const actor = ticket .ticket ( {
+
+play: ticket .actor ( socket, subprocess )
+
+} ) .stamp;
+
+const audience = ticket .ticket ( {
+
+play: ticket .audience ( socket, subprocess )
+
+} ) .stamp;
+ 
+socket .send ( '#ticket #actor ' + actor );
+socket .send ( '#ticket #audience ' + audience );
 
 } );
 

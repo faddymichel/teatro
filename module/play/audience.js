@@ -1,4 +1,6 @@
-module .exports = ( socket, subprocess ) => {
+const descriptor = module .exports;
+
+descriptor .value = ( socket, subprocess ) => {
 
 subprocess .stdout .setEncoding ( 'utf8' );
 

@@ -2,7 +2,7 @@ const crypto = require ( 'crypto' );
 let index = 0;
 const random = Math .random ();
 
-const stamper = module .exports = function stamper () {
+const stamp = module .exports = function stamp () {
 
 return crypto
 .createHash ( 'sha256' )
