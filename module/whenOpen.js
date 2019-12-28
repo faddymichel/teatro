@@ -1,6 +1,6 @@
 const descriptor = module .exports;
 
-descriptor .value = function host () {
+descriptor .value = function whenOpen () {
 
 const teatro = this;
 
@@ -31,7 +31,7 @@ value: teatro .play .audience
 
 } );
 
-teatro .emit ( 'host', stamp );
+teatro .emit ( 'host', stamp, ticket );
 
 } );
 

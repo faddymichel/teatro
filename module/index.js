@@ -13,12 +13,13 @@ host: options .host,
 port: options .port
 
 } ),
-//enumerable: true
+enumerable: true
 
 } );
 
-this .host ();
-this .seat ();
+this .whenOpen ();
+this .whenParticipant ();
+this .whenError ();
 
 };
 
@@ -36,8 +37,10 @@ writable: true
 
 'play',
 'ticket',
-'host',
-'seat'
+'close',
+'whenOpen',
+'whenParticipant',
+'whenError'
 
 ] .forEach ( ( property ) => {
 

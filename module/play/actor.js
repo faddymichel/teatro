@@ -2,8 +2,8 @@ const descriptor = module .exports;
 
 descriptor .value = ( socket, subprocess ) => {
 
-subprocess .stdin .setEncoding ( 'utf8' );
-subprocess .stdout .setEncoding ( 'utf8' );
+//subprocess .stdin .setEncoding ( 'utf8' );
+//subprocess .stdout .setEncoding ( 'utf8' );
 
 return function actor ( socket ) {
 

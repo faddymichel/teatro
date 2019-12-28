@@ -16,7 +16,7 @@ const argv = data .split ( ' ' );
 
 const subprocess = spawn ( argv [ 0 ], argv .slice [ 1 ] );
 
-console .log ( ticket );
+if ( subprocess .pid ) {
 
 const actor = ticket .ticket ( {
 
@@ -32,6 +32,16 @@ play: ticket .audience ( socket, subprocess )
  
 socket .send ( '#ticket #actor ' + actor );
 socket .send ( '#ticket #audience ' + audience );
+
+} else {
+
+socket .send ( '#false' );
+
+}
+
+ticket .emit ( 'play', subprocess );
+
+ticket .play ( socket );
 
 } );
 

@@ -14,7 +14,7 @@ $ [ property ] = require ( './' + property );
 
 const descriptor = module .exports;
 
-descriptor .value = function ticket ( args ) {
+const ticket = descriptor .value = function ticket ( args ) {
 
 if ( args .stamp )
 return {

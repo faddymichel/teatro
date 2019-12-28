@@ -1,6 +1,6 @@
 const descriptor = module .exports;
 
-descriptor .value = function seat () {
+descriptor .value = function whenParticipant () {
 
 const teatro = this;
 
@@ -20,8 +20,13 @@ stamp: stamp
 
 } ) .ticket;
 
-if ( ticket )
+if ( ticket ) {
+
 ticket .play ( socket );
+
+teatro .emit ( 'participant', ticket, socket );
+
+}
 
 else {
 
