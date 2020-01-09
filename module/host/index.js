@@ -5,6 +5,7 @@ const $host = module .exports = function $host ( socket ) {
 
 const host = this;
 
+socket .send ( '#play #host' );
 socket .send ( '?command' );
 
 socket .once ( 'message', ( data ) => {

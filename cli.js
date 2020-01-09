@@ -21,8 +21,6 @@ console .log ( '#ticket', '#host', stamp );
 
 host .on ( 'play', ( subprocess ) => {
 
-console .error ( '#play', subprocess .pid );
-
 teatro .on ( 'close', () => {
 
 subprocess .kill ();

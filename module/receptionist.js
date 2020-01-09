@@ -4,6 +4,7 @@ const $receptionist = module .exports = function $receptionist ( socket ) {
 
 const receptionist = this;
 
+socket .send ( '#play #receptionist' );
 socket .send ( '?ticket' );
 
 socket .once ( 'message', ( stamp ) => {

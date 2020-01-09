@@ -7,6 +7,8 @@ subprocess .stdout .setEncoding ( 'utf8' );
 
 return function $actor ( socket ) {
 
+socket .send ( '#play #actor' );
+
 socket .on ( 'message', ( data ) => {
 
 subprocess .stdin .write ( data );
