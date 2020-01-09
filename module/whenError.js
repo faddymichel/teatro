@@ -3,8 +3,9 @@ const descriptor = module .exports;
 descriptor .value = function whenError () {
 
 const teatro = this;
+const server = require ( './server' );
 
-teatro .server .on ( 'error', ( error ) => {
+server .on ( 'error', ( error ) => {
 
 teatro .emit ( 'error', error );
 
@@ -12,7 +13,7 @@ teatro .emit ( 'error', error );
 
 teatro .on ( 'host', ( stamp, host ) => {
 
-host .on ( 'play', ( subprocess ) => {
+host .on ( 'subprocess', ( subprocess ) => {
 
 subprocess .on ( 'error', ( error ) => {
 

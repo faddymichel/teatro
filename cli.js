@@ -4,7 +4,16 @@
 
 const argv = require ( './argv.js' );
 const Teatro = require ( './' );
-const teatro = new Teatro ( argv );
+
+const options = {};
+options .server = {
+
+host: argv .host,
+port: argv .port
+
+};
+
+const teatro = new Teatro ( options );
 
 teatro .on ( 'host', ( stamp, host ) => {
 

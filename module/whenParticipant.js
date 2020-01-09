@@ -1,43 +1,28 @@
+const { issue } = require ( './ticket' );
+const receptionist = require ( './receptionist' );
+
 const descriptor = module .exports;
 
 descriptor .value = function whenParticipant () {
 
 const teatro = this;
+const server = require ( './server' );
+const { ticket } = issue ( receptionist );
 
-teatro .server .on ( 'connection', function checkStamp ( socket ) {
-
-socket .send ( '?ticket' );
-
-socket .once ( 'message', ( stamp ) => {
-
-stamp = stamp
-.trim ()
-.toString ( 'hex' );
-
-const ticket = teatro .ticket ( {
-
-stamp: stamp
-
-} ) .ticket;
-
-if ( ticket ) {
+server .on ( 'connection', ( socket ) => {
 
 ticket .play ( socket );
 
-teatro .emit ( 'participant', ticket, socket );
-
-}
-
-else {
-
-socket .send ( '#false' );
-
-checkStamp ( socket );
-
-}
-
 } );
 
+teatro .on ( 'host', ( stamp, host ) => {
+
+host .on ( 'end', ( socket ) => {
+
+ticket .play ( socket );
+
+} );
+ 
 } );
 
 };

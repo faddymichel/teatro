@@ -1,21 +1,10 @@
 const EventEmitter = require ( 'events' );
-const ws = require ( 'ws' );
 
 const Teatro = module .exports = function Teatro ( options ) {
 
 EventEmitter .call ( this );
 
-Object .defineProperty ( this, 'server', {
-
-value: new ws .Server ( {
-
-host: options .host,
-port: options .port
-
-} ),
-enumerable: true
-
-} );
+Object .assign ( require ( './options' ), options );
 
 this .whenOpen ();
 this .whenParticipant ();
@@ -35,8 +24,6 @@ writable: true
 
 [
 
-'play',
-'ticket',
 'close',
 'whenOpen',
 'whenParticipant',

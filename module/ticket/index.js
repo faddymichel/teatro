@@ -1,45 +1,12 @@
-const $ = {};
+const ticket = module .exports;
 
 [
 
-'stamp',
-'Ticket',
-'book'
+'issue',
+'check'
 
 ] .forEach ( ( property ) => {
 
-$ [ property ] = require ( './' + property );
+Object .defineProperty ( ticket, property, require ( './' + property ) );
 
 } );
-
-const descriptor = module .exports;
-
-const ticket = descriptor .value = function ticket ( args ) {
-
-if ( args .stamp )
-return {
-
-stamp: args .stamp,
-ticket: $ .book [ args .stamp ] || false
-
-};
-
-const stamp = $ .stamp ();
-
-$ .book [ stamp ] = new $ .Ticket ();
-
-Object .defineProperty ( $ .book [ stamp ], 'play', {
-
-value: args .play,
-enumerable: true
-
-} );
-
-return {
-
-stamp: stamp,
-ticket: $ .book [ stamp ]
-
-};
-
-};

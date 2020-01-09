@@ -8,7 +8,7 @@ const header = document .createElement ( 'header' );
 article .appendChild ( header );
 
 const h1 = document .createElement ( 'h1' );
-h1 .textContent = 'psmd13 / pass';
+h1 .textContent = 'teatro13 / teatro';
 header .appendChild ( h1 );
 
 const section = document .createElement ( 'section' );
@@ -39,8 +39,22 @@ ws .onmessage = ( event ) => {
 
 console .log ( '#message', event .data );
 
+let content;
+
+if ( event .data instanceof Blob ) {
+
+content = '';
+content += event .data .type + '\n';
+content += event .data .text;
+
+} else {
+
+content = event .data;
+
+}
+
 const p = document .createElement ( 'p' );
-p .textContent = event .data;
+p .textContent = content;
 section .appendChild ( p );
 
 };

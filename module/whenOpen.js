@@ -1,37 +1,18 @@
+const { issue } = require ( './ticket' );
+const host = require ( './host' );
+
 const descriptor = module .exports;
 
 descriptor .value = function whenOpen () {
 
 const teatro = this;
+const server = require ( './server' );
 
-teatro .server .on ( 'listening', () => {
+server .on ( 'listening', () => {
 
-const { stamp, ticket } = teatro .ticket ( {
+const $host = issue ( host );
 
-play: teatro .play .host
-
-} );
-
-Object .defineProperty ( ticket, 'ticket', {
-
-value: teatro .ticket
-
-} );
-
-Object .defineProperty ( ticket, 'actor', {
-
-value: teatro .play .actor,
-enumerable: true
-
-} );
-
-Object .defineProperty ( ticket, 'audience', {
-
-value: teatro .play .audience
-
-} );
-
-teatro .emit ( 'host', stamp, ticket );
+teatro .emit ( 'host', $host .stamp, $host .ticket );
 
 } );
 

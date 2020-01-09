@@ -5,8 +5,9 @@ descriptor .enumerable = true;
 descriptor .value = function close () {
 
 const teatro = this;
+const server = require ( './server' );
 
-teatro .server .close ();
+server .close ();
 
 teatro .emit ( 'close' );
 
