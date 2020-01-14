@@ -1,24 +1,15 @@
-const stamp = require ( './stamp' );
-const Ticket = require ( './Ticket' );
-const book = require ( './book' );
+const $ = require ( './symbol' );
 
 const descriptor = module .exports;
 
 descriptor .value = function issue ( play ) {
 
-const $ = {};
+const Ticket = this;
 
-$ .stamp = stamp ();
+const stamp = Ticket [ $ .stamp ] ();
 
-$ .ticket = book [ $ .stamp ] = new Ticket ();
+Ticket [ $ .book ] [ stamp ] = new Ticket ( play );
 
-Object .defineProperty ( $ .ticket, 'play', {
-
-value: play,
-enumerable: true
-
-} );
-
-return $;
+return stamp;
 
 };

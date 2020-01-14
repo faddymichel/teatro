@@ -1,12 +1,11 @@
-const ticket = module .exports;
+const symbol = require ( './symbol' );
 
-[
+const descriptor = module .exports;
 
-'issue',
-'check'
+const Ticket = descriptor .value = require ( './Ticket' );
 
-] .forEach ( ( property ) => {
+Object .keys ( symbol ) .forEach ( ( property ) => {
 
-Object .defineProperty ( ticket, property, require ( './' + property ) );
+Object .defineProperty ( Ticket, symbol [ property ], require ( './' + property ) );
 
 } );

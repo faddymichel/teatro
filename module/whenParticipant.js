@@ -1,25 +1,27 @@
-const { issue } = require ( './ticket' );
-const receptionist = require ( './receptionist' );
+const $ = require ( './symbol' );
+const $ticket = require ( './ticket/symbol' );
+const _usher = require ( './usher' );
 
 const descriptor = module .exports;
 
 descriptor .value = function whenParticipant () {
 
 const teatro = this;
-const server = require ( './server' );
-const { ticket } = issue ( receptionist );
 
-server .on ( 'connection', ( socket ) => {
+const stamp = teatro [ $ .ticket ] [ $ticket .issue ] ( _usher );
+const usher = teatro [ $ .ticket ] [ $ticket .retrieve ] ( stamp );
 
-ticket .play ( socket );
+teatro [ $ .server ] .on ( 'connection', ( socket ) => {
+
+usher .play ( socket );
 
 } );
 
 teatro .on ( 'host', ( stamp, host ) => {
 
-host .on ( 'end', ( socket ) => {
+host .on ( 'end', ( { socket } ) => {
 
-ticket .play ( socket );
+usher .play ( socket );
 
 } );
  

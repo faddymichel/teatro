@@ -1,1 +1,3 @@
-module .exports = [];
+const descriptor = module .exports;
+
+descriptor .value = [];

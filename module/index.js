@@ -1,26 +1,8 @@
-const EventEmitter = require ( 'events' );
+const $ = require ( './symbol' );
 
-const Teatro = module .exports = function Teatro ( options ) {
+const Teatro = module .exports = require ( './Teatro' );
 
-EventEmitter .call ( this );
-
-Object .assign ( require ( './options' ), options );
-
-this .whenOpen ();
-this .whenParticipant ();
-this .whenError ();
-
-};
-
-Teatro .prototype = Object .create ( EventEmitter .prototype );
-
-Object .defineProperty ( Teatro .prototype, 'constructor', {
-
-value: Teatro,
-enumerable: false,
-writable: true
-
-} );
+Object .defineProperty ( Teatro .prototype, $ .ticket, require ( './ticket' ) );
 
 [
 
