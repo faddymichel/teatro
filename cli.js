@@ -19,7 +19,7 @@ teatro .on ( 'host', ( stamp, host ) => {
 
 console .log ( '#ticket', '#host', stamp );
 
-host .on ( 'play', ( subprocess ) => {
+host .on ( 'play', ( { subprocess } ) => {
 
 teatro .on ( 'close', () => {
 

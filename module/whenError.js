@@ -14,7 +14,7 @@ teatro .emit ( 'error', error );
 
 teatro .on ( 'host', ( stamp, host ) => {
 
-host .on ( 'prepare', ( { subprocess } ) => {
+host .on ( 'prepare', ( subprocess ) => {
 
 subprocess .on ( 'error', ( error ) => {
 

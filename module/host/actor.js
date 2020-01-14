@@ -1,11 +1,21 @@
-const descriptor = module .exports;
+let count = 0;
 
-descriptor .value = ( socket, subprocess ) => {
+module .exports = ( subprocess ) => {
 
 subprocess .stdin .setEncoding ( 'utf8' );
 subprocess .stdout .setEncoding ( 'utf8' );
 
 return function $actor ( socket ) {
+
+const actor = this;
+
+actor .emit ( 'count', ++count );
+
+socket .on ( 'close', () => {
+
+actor .emit ( 'count', --count );
+
+} );
 
 socket .send ( '#play #actor' );
 

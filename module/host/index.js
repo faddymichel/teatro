@@ -1,57 +1,49 @@
-const { issue } = require ( '../ticket' );
 const { spawn } = require ( 'child_process' );
+const _producer = require ( './producer' );
 
-const $host = module .exports = function $host ( socket ) {
+module .exports = function __host ( _ ) {
+
+return function _host ( socket ) {
 
 const host = this;
 
 socket .send ( '#play #host' );
 socket .send ( '?command' );
 
-socket .once ( 'message', ( data ) => {
+socket .once ( 'message', ( argv ) => {
 
-const argv = data .split ( ' ' );
+argv = argv
+.trim ()
+.split ( ' ' );
 
-const subprocess = spawn ( argv [ 0 ], argv .slice [ 1 ] );
+_ .subprocess = spawn ( argv [ 0 ], argv .slice [ 1 ] );
 
-host .emit ( 'subprocess', subprocess );
+host .emit ( 'prepare', _ .subprocess );
 
-if ( subprocess .pid ) {
+if ( _ .subprocess .pid ) {
 
-const actor = host .play .issue ( host .play .actor ( socket, subprocess ) ) .stamp;
-const audience = host .play .issue ( host .play .audience ( socket, subprocess ) ) .stamp;
+_ .owner = Symbol ();
 
-socket .send ( '#ticket #actor ' + actor );
-socket .send ( '#ticket #audience ' + audience );
+const stamp = _ .Ticket [ _ .issue ] ( _producer ( _ ), _ .owner );
 
-host .emit ( 'play', subprocess );
+socket .send ( '#ticket #producer ' + stamp );
+ 
+host .emit ( 'play', _ );
 
-} else {
+}
+
+else {
 
 socket .send ( '#false' );
 
 }
 
-host .emit ( 'end', socket );
+_ .socket = socket;
+
+host .emit ( 'end', _ );
 
 } );
 
 };
 
-Object .defineProperty ( $host, 'issue', {
-
-value: issue,
-enumerable: true
-
-} );
-
-[
-
-'actor',
-'audience'
-
-] .forEach ( ( property ) => {
-
-Object .defineProperty ( $host, property, require ( './' + property ) );
-
-} );
+};

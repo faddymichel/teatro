@@ -1,5 +1,5 @@
 const $ = require ( './symbol' );
-const $ticket = require ( './ticket/symbol' );
+const { issue, retrieve, cancel } = require ( './ticket/symbol' );
 const _host = require ( './host' );
 
 const descriptor = module .exports;
@@ -10,8 +10,14 @@ const teatro = this;
 
 teatro [ $ .server ] .on ( 'listening', () => {
 
-const stamp = teatro [ $ .ticket ] [ $ticket .issue ] ( _host );
-const host = teatro [ $ .ticket ] [ $ticket .retrieve ] ( stamp );
+const stamp = teatro [ $ .ticket ] [ issue ] ( _host ( {
+
+Ticket: teatro [ $ .ticket ],
+issue: issue,
+cancel: cancel
+
+} ) );
+const host = teatro [ $ .ticket ] [ retrieve ] ( stamp );
 
 teatro .emit ( 'host', stamp, host );
 
