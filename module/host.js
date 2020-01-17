@@ -1,5 +1,6 @@
 const { spawn } = require ( 'child_process' );
 const _producer = require ( './producer' );
+const Play = require ( './Play' );
 
 module .exports = function __host ( _ ) {
 
@@ -23,18 +24,31 @@ host .emit ( 'prepare', _ .subprocess );
 if ( _ .subprocess .pid ) {
 
 _ .owner = Symbol ();
+_ .count = 1;
 
-const stamp = _ .Ticket [ _ .issue ] ( _producer ( _ ), _ .owner );
+const play = new Play ( _ );
 
-socket .send ( '#ticket #producer ' + stamp );
+play .on ( 'ticket', ( stamp ) => {
+
+play .once ( 'end', () => {
+
+_ .Ticket [ _ .cancel ] ( stamp, _ .owner );
+
+} );
+
+} );
+
+const stamp = _ .Ticket [ _ .issue ] ( _producer ( play ), _ .owner );
+
+play .emit ( 'ticket', stamp );
+socket .send ( '#ticket #issue #producer ' + stamp );
+host .emit ( 'play', play );
  
-host .emit ( 'play', _ );
-
 }
 
 else {
 
-socket .send ( '#false' );
+socket .send ( '#command #false' );
 
 }
 

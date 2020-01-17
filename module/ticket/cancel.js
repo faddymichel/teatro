@@ -7,8 +7,13 @@ descriptor .value = function cancel ( stamp, owner ) {
 const Ticket = this;
 const ticket = Ticket [ $ .book ] [ stamp ];
 
-return ticket && ticket .owner === owner ?
-delete Ticket [ $ .book ] [ stamp ] :
-false;
+if ( ticket && ticket .owner === owner ) {
+
+ticket .emit ( 'cancel' );
+delete Ticket [ $ .book ] [ stamp ];
+
+return ticket;
+
+}
 
 };

@@ -25,7 +25,7 @@ usher .emit ( 'participant', ticket, socket );
 
 else {
 
-socket .send ( '#false' );
+socket .send ( '#ticket #retrieve #false' );
 usher .play ( socket );
 
 }

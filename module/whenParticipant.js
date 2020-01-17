@@ -11,6 +11,18 @@ const teatro = this;
 const stamp = teatro [ $ .ticket ] [ issue ] ( _usher ( teatro [ $ .ticket ], retrieve ) );
 const usher = teatro [ $ .ticket ] [ retrieve ] ( stamp );
 
+usher .on ( 'participant', ( ticket, socket ) => {
+
+ticket .once ( 'cancel', () => {
+
+socket .send ( '#ticket #cancel' );
+
+usher .play ( socket );
+
+} );
+
+} );
+
 teatro [ $ .server ] .on ( 'connection', ( socket ) => {
 
 usher .play ( socket );

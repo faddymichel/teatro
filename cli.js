@@ -17,15 +17,13 @@ const teatro = new Teatro ( options );
 
 teatro .on ( 'host', ( stamp, host ) => {
 
-console .log ( '#ticket', '#host', stamp );
+console .log ( '#ticket', '#issue', '#host', stamp );
 
 host .on ( 'play', ( { subprocess } ) => {
 
 teatro .on ( 'close', () => {
 
 subprocess .kill ();
-
-console .error ( '#play #end', subprocess .pid );
 
 } );
 
