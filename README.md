@@ -29,3 +29,17 @@ Supposing that the Client has this `<STAMP>` on hand, somehow, and provides it t
 The Host will play and Usher leaves for now.
 
 ### Time to Host Child-Processes; Or Shall It Be Called Plays?
+
+Since it is the Host playing now, `#play #host# is sent to the Client.
+The Host, then, sends `?command`.
+When the Client responds with a command,
+the Host attempts to start a new Child-Process/Play in which the command would start running.
+If the Play starts successfully,
+the Host issues a Producer Ticket and responds to the Client with `#ticket #issue #producer <STAMP>`.
+Or, responds with `#false` otherwise.
+Finally, the Host leaves and the Usher is back to play.
+
+In case of success,
+the Client should probably provide the Usher with the newly given `<STAMP>` so that the Producer Ticket plays.
+
+### Put Everything in Order before Playing
