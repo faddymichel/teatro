@@ -1,3 +1,8 @@
+## Synopsis
+
+```
+teatro [ --host=<HOST> | -H <HOST> ] [ --port=<PORT> | -P <PORT> ]
+```
 ## Description
 
 Teatro is a WebSocket Server where Shell Child-Processes can be created and accessed through Tickets.
@@ -49,13 +54,9 @@ The client may write one of the following orders:
 This will issue a new Ticket for the specified `<ROLE>`;
 where `producer`, `actor` and `audience` are the allowed values of `<ROLE>`.
 
-* ```
-cancel <STAMP>
-```
+* ``` cancel <STAMP> ```
 This will cancel the Ticket related to the specified `<STAMP>`,
 only if, the `<STAMP>` is related to an existing Ticket and the Ticket was issued for the Play the Producer is responsible for.
 
-* ```
-end
-```
+* ``` end ```
 This will end the play and cancel all of its Tickets.
