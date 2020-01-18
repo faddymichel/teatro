@@ -1,8 +1,3 @@
-## Synopsis
-
-```
-teatro [ --host=<HOST> | -H <HOST> ] [ --port=<PORT> | -P <PORT> ]
-```
 ## Description
 
 Teatro is a WebSocket Server where Shell Child-Processes can be created and accessed through Tickets.
@@ -50,9 +45,7 @@ informing the Client that the Producer is playing.
 The Producer asks the Client for an order to execute by sending `?order`.
 The client may write one of the following orders:
 
-* ```
-issue <ROLE>
-```
+* ``` issue <ROLE> ```
 This will issue a new Ticket for the specified `<ROLE>`;
 where `producer`, `actor` and `audience` are the allowed values of `<ROLE>`.
 
