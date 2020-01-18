@@ -23,3 +23,9 @@ The Usher sends `?ticket` asking the Client for a `<STAMP>` value.
 Depending on the received value,
 the Usher retrieves the requested Ticket and plays it;
 or responds with `#false` if the Ticket was not found.
+
+At first, only the `<STAMP>` for the Host Ticket is available in Teatro.
+Supposing that the Client has this `<STAMP>` on hand, somehow, and provides it to the Usher,
+The Host will play and Usher leaves for now.
+
+### Time to Host Child-Processes; Or Shall It Be Called Plays?
