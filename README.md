@@ -1,29 +1,25 @@
-# Teatro: Play the Shell through WebSocket Tickets
+## Synopsis
+
+```
+teatro [ --host=<HOST> | -H <HOST> ] [ --port=<PORT> | -P <PORT> ]
+```
+## Description
 
 Teatro is a WebSocket Server where Shell Child-Processes can be created and accessed through Tickets.
 
-## Overview
+### Overview
 
-When a Teatro opens, a WebSocket server is created.
-Teatro waits for the server to start listening to create the Host Ticket; an event is emitted along with the stamp used to find this ticket.
-Now, Teatro is ready to host Plays.
+When running `teatro` shell command,
+a WebSocket Server is created and starts listening on the specified host and port waiting for a WebSocket Client to connect;
+`localhost:1313` is the default value and can be changed using `--host | -H` and `--port | -P`.
+Teatro, then, prints `#ticket #issue #host <STAMP>` to the Standard Output;
+where `<STAMP>` is the value used by a WebSocket Client to play the Host Ticket.
 
-In case a WebSocket client connects to Teatro, Teatro asks the client for a ticket.
-At first, only the Host Ticket is available.
-If the client provides the stamp of this ticket, Teatro starts the Host Play.
-The  play starts by asking the client for a command.
-If the client responds with a valid command, the play continues by spawning a child process for this command.
-Then, the client receives two stamps for two tickets; one for the Actor and another for the Audience.
-The Actor Ticket can be used by any newly connected client, so that whatever data is sent from the client would be piped to the Standard Input of the child process,
-and whatever data appears from the Standard Output would be sent back to the client.
-The Audience Ticket works in a similar manner except that it would only receive data from the Standard Output of the child process;
-no data can be piped to the Standard Input.
-Finally, the play restarts and asks the connected client for a command.
+### On Client-Side, It All Begins by Being Ushered In
 
-## Installation
-
-## Usage
-
-## Author
-
-Faddy Michel Samaan <faddy@teatro13.com>
+When a Client connects to Teatro,
+Teatro sends `#play #usher` to the Client informing it that the Usher Ticket is playing.
+The Usher sends `?ticket` asking the Client for a `<STAMP>` value.
+Depending on the received value,
+the Usher retrieves the requested Ticket and plays it;
+or responds with `#false` if the Ticket was not found.
