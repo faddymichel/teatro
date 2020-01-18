@@ -43,3 +43,26 @@ In case of success,
 the Client should probably provide the Usher with the newly given `<STAMP>` so that the Producer Ticket plays.
 
 ### Put Everything in Order before Playing
+
+Similar to prior tickets,
+`#play #producer` is sent;
+informing the Client that the Producer is playing.
+The Producer asks the Client for an order to execute by sending `?order`.
+The client may write one of the following orders:
+
+* ```
+issue <ROLE>
+```
+This will issue a new Ticket for the specified `<ROLE>`;
+where `producer`, `actor` and `audience` are the allowed values of `<ROLE>`.
+
+* ```
+cancel <STAMP>
+```
+This will cancel the Ticket related to the specified `<STAMP>`,
+only if, the `<STAMP>` is related to an existing Ticket and the Ticket was issued for the Play the Producer is responsible for.
+
+* ```
+end
+```
+This will end the play and cancel all of its Tickets.
