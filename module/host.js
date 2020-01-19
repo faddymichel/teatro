@@ -17,7 +17,7 @@ argv = argv
 .trim ()
 .split ( ' ' );
 
-_ .subprocess = spawn ( argv [ 0 ], argv .slice [ 1 ] );
+_ .subprocess = spawn ( argv [ 0 ], argv .slice ( 1 ) );
 
 host .emit ( 'prepare', _ .subprocess );
 

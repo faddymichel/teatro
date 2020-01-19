@@ -1,7 +1,7 @@
 module .exports = function _execute ( play ) {
 
 const { producer } = play;
-const command = {};
+const order = {};
 
 [
 
@@ -11,7 +11,7 @@ const command = {};
 
 ] .forEach ( ( argv0 ) => {
 
-command [ argv0 ] = require ( './' + argv0 ) ( play );
+order [ argv0 ] = require ( './' + argv0 ) ( play );
 
 } );
 
@@ -24,11 +24,11 @@ argv = argv
 .trim ()
 .split ( ' ' );
 
-if ( command [ argv [ 0 ] ] )
-finish = command [ argv [ 0 ] ] ( socket, argv );
+if ( order [ argv [ 0 ] ] )
+finish = order [ argv [ 0 ] ] ( socket, argv );
 
 else
-socket .send ( '#command #false' );
+socket .send ( '#order #false' );
 
 if ( finish )
 socket .send ( '?order' );

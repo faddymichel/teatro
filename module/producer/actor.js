@@ -1,8 +1,5 @@
 module .exports = function __actor ( subprocess ) {
 
-subprocess .stdin .setEncoding ( 'utf8' );
-subprocess .stdout .setEncoding ( 'utf8' );
-
 return function _actor ( socket ) {
 
 const actor = this;
@@ -22,14 +19,15 @@ socket .send ( line );
 };
 
 socket .on ( 'message', act );
-
 subprocess .stdout .on ( 'data', listen );
- 
+subprocess .stderr .on ( 'data', listen );
+  
 actor .on ( 'cancel', () => {
 
 socket .removeListener ( 'message', act );
 subprocess .stdout .removeListener ( 'data', listen );
-
+subprocess .stderr .removeListener ( 'data', listen );
+ 
 } );
 
 };
