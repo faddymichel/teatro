@@ -73,6 +73,14 @@ Provided that the Play is running and its various Tickets can be issued and canc
 nothing is left except accessing the Play through Actor and Audience Tickets.
 
 ### Now, Play! Or, Just Sit and Watch!
+
+`#play #actor` and `#play #audience` would be sent to the Client
+when it is ushered in through Actor and Audience Tickets, respectively.
+
+Data sent from the Actor via the WebSocket would be written to the Standard Input of the Child-Process/Play;
+while data read from the Standard Output and Standard Error of the Child-Process/Play would be sent to the Actor.
+
+On the other hand, the Audience can only receive data from the Standard Output of the Child-Process/Play.
 ## Author
 
 Faddy Michel Samaan
