@@ -31,7 +31,7 @@ else
 socket .send ( '#command #false' );
 
 if ( finish )
-socket .send ( '?command' );
+socket .send ( '?order' );
 
 };
 

@@ -30,7 +30,7 @@ The Host will play and Usher leaves for now.
 
 ### Time to Host Child-Processes; Or Shall It Be Called Plays?
 
-Since it is the Host playing now, `#play #host# is sent to the Client.
+Since it is the Host playing now, `#play #host` is sent to the Client.
 The Host, then, sends `?command`.
 When the Client responds with a command,
 the Host attempts to start a new Child-Process/Play in which the command would start running.

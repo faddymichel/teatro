@@ -8,7 +8,7 @@ play .producer = this;
 const execute = require ( './execute' ) ( play );
  
 socket .send ( '#play #producer' );
-socket .send ( '?command' );
+socket .send ( '?order' );
 
 socket .on ( 'message', execute );
 
