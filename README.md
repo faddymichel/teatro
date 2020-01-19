@@ -1,3 +1,11 @@
+# Teatro Kan WaKan WaKan
+### In Memory of the Theatrical Artist Fouad El-Mohandes
+
+This is an Experimental Version and is not recommended, by all means,
+to be used in Production Environments!
+## Name
+
+Teatro - Play the Shell through WebSocket Tickets
 ## Synopsis
 
 ```
@@ -40,7 +48,7 @@ Or, responds with `#false` otherwise.
 Finally, the Host leaves and the Usher is back to play.
 
 In case of success,
-the Client should probably provide the Usher with the newly given `<STAMP>` so that the Producer Ticket plays.
+the Client would probably provide the Usher with the newly given `<STAMP>` so that the Producer Ticket plays.
 
 ### Put Everything in Order before Playing
 
@@ -57,6 +65,17 @@ where `producer`, `actor` and `audience` are the allowed values of `<ROLE>`.
 * ``` cancel <STAMP> ```
 This will cancel the Ticket related to the specified `<STAMP>`,
 only if, the `<STAMP>` is related to an existing Ticket and the Ticket was issued for the Play the Producer is responsible for.
+Note, if all Producer Tickets issued for a play are cancelled, the play will end immediately.
 
 * ``` end ```
 This will end the play and cancel all of its Tickets.
+
+Provided that the Play is running and its various Tickets can be issued and cancelled by the Producer,
+nothing is left except accessing the Play through Actor and Audience Tickets.
+
+### Now, Play! Or, Just Sit and Watch!
+## Author
+
+Faddy Michel Samaan
+`<faddy@teatro13.com>`
+@faddymichel
