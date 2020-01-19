@@ -15,7 +15,6 @@ teatro [ --host=<HOST> | -H <HOST> ] [ --port=<PORT> | -P <PORT> ]
 
 Teatro is a WebSocket Server where Shell Child-Processes can be created and accessed through Tickets.
 
-### Overview
 
 When running `teatro` shell command,
 a WebSocket Server is created and starts listening on the specified host and port waiting for a WebSocket Client to connect;
