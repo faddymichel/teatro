@@ -1,32 +1,34 @@
+const $ = require ( './symbol' );
 const _actor = require ( './actor' );
 const _audience = require ( './audience' );
 const _producer = require ( './' );
 
-module .exports = function __issue ( play ) {
+const descriptor = module .exports;
 
-const { producer, subprocess, owner, Ticket, issue } = play;
+descriptor .value = function _issue ( socket, argv ) {
 
-return function _issue ( socket, argv ) {
-
+const producer = this;
+const play = producer .participate [ $ .play ];
+const { subprocess, signature, Ticket, issue } = play;
 let stamp;
 
 switch ( argv [ 1 ] ) {
 
 case 'actor':
 
-stamp = Ticket [ issue ] ( _actor ( subprocess ), owner );
+stamp = Ticket [ issue ] ( _actor ( subprocess ), signature );
 
 break;
 
 case 'audience':
 
-stamp = Ticket [ issue ] ( _audience ( subprocess ), owner );
+stamp = Ticket [ issue ] ( _audience ( subprocess ), signature );
 
 break;
 
 case 'producer':
 
-stamp = Ticket [ issue ] ( _producer ( play ), owner );
+stamp = Ticket [ issue ] ( _producer ( play ), signature );
 play .count++;
 
 break;
@@ -44,7 +46,5 @@ else
 socket .send ( '#ticket #issue #false' );
 
 return true;
-
-};
 
 };

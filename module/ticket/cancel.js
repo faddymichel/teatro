@@ -1,13 +1,13 @@
-const $ = require ( './symbol' );
+const $ = require ( './symbol' ) .modules;
 
 const descriptor = module .exports;
 
-descriptor .value = function cancel ( stamp, owner ) {
+descriptor .value = function cancel ( stamp, signature ) {
 
 const Ticket = this;
 const ticket = Ticket [ $ .book ] [ stamp ];
 
-if ( ticket && ticket .owner === owner ) {
+if ( ticket && ticket .signature === signature ) {
 
 ticket .emit ( 'cancel' );
 delete Ticket [ $ .book ] [ stamp ];

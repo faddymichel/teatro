@@ -1,10 +1,18 @@
-module .exports = ( Ticket, retrieve ) => {
+const EventEmitter = require ( 'events' );
 
-return function _usher ( socket ) {
+const Usher = function Usher ( socket ) {
 
 const usher = this;
 
-socket .send ( '#play #usher' );
+EventEmitter .call ( usher );
+
+Object .defineProperty ( usher, socket, {
+
+value: socket
+
+} );
+
+socket .send ( '#participant #usher' );
 socket .send ( '?ticket' );
 
 socket .once ( 'message', ( stamp ) => {
@@ -17,7 +25,7 @@ const ticket = Ticket [ retrieve ] ( stamp );
 
 if ( ticket ) {
 
-ticket .play ( socket );
+ticket .participate ( socket );
 
 usher .emit ( 'participant', ticket, socket );
 
@@ -26,12 +34,10 @@ usher .emit ( 'participant', ticket, socket );
 else {
 
 socket .send ( '#ticket #retrieve #false' );
-usher .play ( socket );
+usher .participate ( socket );
 
 }
 
 } );
-
-};
 
 };

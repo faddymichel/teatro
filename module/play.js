@@ -1,10 +1,10 @@
-const EventEmitter = require ( 'events' );
+const Emitter = require ( 'events' );
  
 const Play = module .exports = function Play ( _ ) {
 
 const play = this;
 
-EventEmitter .call ( play );
+Emitter .call ( play );
 
 Object .assign ( play, _ );
 
@@ -20,7 +20,7 @@ play .emit ( 'end' );
 
 };
 
-Play .prototype = Object .create ( EventEmitter .prototype );
+Play .prototype = Object .create ( Emitter .prototype );
 
 Object .defineProperty ( Play .prototype, 'constructor', {
 
