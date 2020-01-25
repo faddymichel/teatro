@@ -7,12 +7,22 @@ descriptor .value = function start () {
 const role = this;
 
 const socket = role [ $ .socket ];
-const listen = role [ $ .listener ] ();
 
 socket .send ( `#role #${ role .constructor .name .toLowerCase () } #start` );
+
+if ( role [ $ .prompt ] )
 socket .send ( role [ $ .prompt ] ); 
 
-if ( listen )
-socket .on ( 'message', listen );
+if ( role [ $ .listener ] () ) {
+
+Object .defineProperty ( role, $ .listen, {
+
+value: role [ $ .listener ] ()
+
+} );
+
+socket .on ( 'message', role [ $ .listen ] );
+
+}
 
 };
