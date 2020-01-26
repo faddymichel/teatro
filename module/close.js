@@ -1,6 +1,6 @@
-const $ = require ( './symbol' );
+module .exports = ( $ ) => {
 
-const descriptor = module .exports;
+const descriptor = {};
 
 descriptor .enumerable = true;
 
@@ -11,5 +11,9 @@ const teatro = this;
 teatro [ $ .server ] .close ();
 
 teatro .emit ( 'close' );
+
+};
+
+return descriptor;
 
 };

@@ -22,18 +22,8 @@ value: Math .random ()
 
 Object .keys ( $ .methods ) .forEach ( ( property ) => {
 
-Object .defineProperty ( book, $ .methods [ property ], require ( './' + property ) );
+Object .defineProperty ( book, $ .methods [ property ], require ( './' + property ) ( $ ) );
 
 } );
 
 };
-
-Book .prototype = Object .create ( Emitter .prototype );
-
-Object .defineProperty ( Book .prototype, 'constructor', {
-
-value: Book,
-enumerable: false,
-writable: true
-
-} );

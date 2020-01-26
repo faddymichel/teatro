@@ -15,21 +15,20 @@ port: argv .port
 
 const teatro = new Teatro ( options );
 
-teatro .on ( 'host', ( stamp, host ) => {
+/*
+const teatro2 = new Teatro ( {
 
-console .log ( '#ticket', '#issue', '#host', stamp );
+server: {
 
-host .on ( 'play', ( { subprocess } ) => {
+port: 1300
 
-teatro .on ( 'close', () => {
-
-subprocess .kill ();
-
-} );
+}
 
 } );
+console .log ( 'teatro2:', teatro2 );
+*/ 
 
-} );
+teatro .on ( 'open', require ( './open' ) );
 
 process .on ( 'SIGINT', () => {
 

@@ -1,6 +1,8 @@
-const descriptor = module .exports;
+module .exports = ( $ ) => {
 
-descriptor .value = function cancel ( stamp, signature, $ ) {
+const descriptor = {};
+
+descriptor .value = function cancel ( stamp, signature ) {
 
 const book = this;
 const ticket = book [ $ .entries ] [ stamp ];
@@ -12,5 +14,9 @@ delete book [ $ .entries ] [ stamp ];
 return ticket;
 
 }
+
+};
+
+return descriptor;
 
 };

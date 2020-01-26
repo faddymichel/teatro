@@ -1,16 +1,24 @@
-const $ = require ( './symbol' );
-const _Host = require ( './host' );
+const Ticket = require ( './ticket' );
 
-const descriptor = module .exports;
+module .exports = ( $ ) => {
+
+const descriptor = {};
 
 descriptor .enumerable = true;
 descriptor .value = function issue ( signature ) {
 
+if ( typeof signature !== 'symbol' )
+throw TypeError ( "Signature must be of type 'symbol'." );
+
 const teatro = this;
 
-const Host = _Host ( teatro [ $ .ticket ], retrieve )
-const stamp = teatro [ $ .ticket ] [ issue ] ( Host, signature );
+const host = new Ticket ( signature );
+const stamp = teatro [ $ .book ] [ $ .issue ] ( host );
 
 return stamp;
  
+};
+
+return descriptor;
+
 };

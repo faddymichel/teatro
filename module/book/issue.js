@@ -1,13 +1,19 @@
-const descriptor = module .exports;
+module .exports = ( $ ) => {
 
-descriptor .value = function issue ( ticket, $ ) {
+const descriptor = {};
+
+descriptor .value = function issue ( ticket ) {
 
 const book = this;
 
-const stamp = book [ $ .stamp ] ();
+const stamp = book [ $ .methods .stamp ] ();
 
 book [ $ .entries ] [ stamp ] = ticket;
 
 return stamp;
+
+};
+
+return descriptor;
 
 };
