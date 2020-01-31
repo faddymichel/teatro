@@ -6,7 +6,7 @@ descriptor .value = function play ( participant, ticket ) {
 
 const teatro = this;
 
-venue [ ticket .play ] .script .call ( teatro, participant, ticket );
+venue [ ticket .play ] .scenario .call ( teatro, participant );
 
 };
 
