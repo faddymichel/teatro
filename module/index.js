@@ -1,7 +1,4 @@
-const keys = require ( './keys' );
-const Book = require ( './book' );
 const Emitter = require ( 'events' );
-const { Server } = require ( 'ws' );
 
 const Teatro = module .exports = function Teatro ( options ) {
 
@@ -17,37 +14,6 @@ Object .defineProperty ( teatro, property, descriptor );
 
 } );
 
-const $ = Teatro .keys ();
-
-Object .defineProperty ( teatro, $ .server,  {
-
-value: new Server ( options .server )
-
-} );
-
-teatro [ $ .server ] .on ( 'listening', () => {
-
-Object .defineProperty ( teatro, $ .book, {
-
-value: new Book ( $ [ $ .book ] )
-
-} );
-
-[
-
-'issue',
-'close'
-
-] .forEach ( ( property ) => {
-
-Object .defineProperty ( teatro, property, require ( './' + property ) ( $ [ property ] ) );
-
-} );
-
-teatro .emit ( 'open' );
-
-} );
-
 };
 
 Teatro .prototype = Object .create ( Emitter .prototype );
@@ -60,4 +26,4 @@ writable: true
 
 } );
 
-Object .defineProperty ( Teatro, 'keys', require ( './keys' ) );
+Object .defineProperty ( Teatro .prototype, 'open', require ( './open' ) );

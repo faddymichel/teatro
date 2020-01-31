@@ -1,4 +1,4 @@
-module .exports = ( $ ) => {
+module .exports = ( server ) => {
 
 const descriptor = {};
 
@@ -8,7 +8,7 @@ descriptor .value = function close () {
 
 const teatro = this;
 
-teatro [ $ .server ] .close ();
+server .close ();
 
 teatro .emit ( 'close' );
 

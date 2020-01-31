@@ -1,34 +1,17 @@
-module .exports = function __cancel ( play ) {
+module .exports = ( book, venue ) => {
 
-const { producer, owner, Ticket, cancel } = play;
+const descriptor = {};
 
-return function _cancel ( socket, argv ) {
+descriptor .enumerable = true;
+descriptor .value = function cancel ( stamp, signature ) {
 
-const ticket = Ticket [ cancel ] ( argv [ 1 ], owner );
-
-if ( ticket .play .name === '_producer' ) {
-
-play .count--;
-
-if ( play .count === 0 )
-play .emit ( 'end' );
-
-}
-
-if ( ticket !== producer ) {
-
-if ( ticket )
-socket .send ( `#ticket #cancel ${ argv [ 1 ] }` );
-
-else
-socket .send ( '#ticket #cancel #false' );
-
-return true;
-
-}
+if ( book [ stamp ] && venue [ book [ stamp ] .play ] .signature === signature )
+return delete book [ stamp ];
 
 return false;
 
 };
+
+return descriptor;
 
 };

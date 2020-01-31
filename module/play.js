@@ -1,31 +1,15 @@
-const Emitter = require ( 'events' );
- 
-const Play = module .exports = function Play ( _ ) {
+module .exports = ( venue ) => {
 
-const play = this;
+const descriptor = {};
 
-Emitter .call ( play );
+descriptor .value = function play ( participant, ticket ) {
 
-Object .assign ( play, _ );
+const teatro = this;
 
-play .subprocess .stdin .setEncoding ( 'utf8' );
-play .subprocess .stdout .setEncoding ( 'utf8' );
-play .subprocess .stderr .setEncoding ( 'utf8' );
- 
-play .subprocess .on ( 'close', () => {
-
-play .emit ( 'end' );
-
-} );
+venue [ ticket .play ] .script .call ( teatro, participant, ticket );
 
 };
 
-Play .prototype = Object .create ( Emitter .prototype );
+return descriptor;
 
-Object .defineProperty ( Play .prototype, 'constructor', {
-
-value: Play,
-enumerable: false,
-writable: true
-
-} );
+};

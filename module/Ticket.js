@@ -1,6 +1,6 @@
 const Emitter = require ( 'events' );
 
-const Ticket = module .exports = function Ticket ( signature ) {
+const Ticket = module .exports = function Ticket ( key ) {
 
 const ticket = this;
 
@@ -13,11 +13,10 @@ descriptor .enumerable = false;
 Object .defineProperty ( ticket, property, descriptor );
 
 } );
- 
-Object .defineProperty ( ticket, 'signature', {
 
-value: signature,
-enumerable: true
+Object .defineProperty ( ticket, 'play', {
+
+value: key
 
 } );
 

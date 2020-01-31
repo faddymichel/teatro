@@ -1,12 +1,11 @@
-module .exports = ( $ ) => {
+module .exports = ( book ) => {
 
 const descriptor = {};
 
+descriptor .enumerable = true;
 descriptor .value = function retrieve ( stamp ) {
 
-const book = this;
-
-return book [ $ .entries ] [ stamp ] || false;
+return book [ stamp ] || false;
 
 };
 
