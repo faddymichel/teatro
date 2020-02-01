@@ -7,6 +7,8 @@ const descriptor = {};
 descriptor .enumerable = true;
 descriptor .value = function host ( scenario, signature ) {
 
+const teatro = this;
+
 if ( typeof scenario !== 'function' )
 teatro .emit ( 'error', new TypeError ( "scenario must be of type 'function'." ) );
 

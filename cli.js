@@ -13,28 +13,25 @@ port: argv .port
 
 };
 
-const teatro = new Teatro ( options );
+const key = options .lock = Symbol ();
 
-/*
-const teatro2 = new Teatro ( {
+const teatro = new Teatro ();
 
-server: {
+teatro .on ( 'error', ( error ) => {
 
-port: 1300
-
-}
+console .error ( '#error', '#teatro', '#code', error .code, '#message', error .message );
 
 } );
-console .log ( 'teatro2:', teatro2 );
-*/ 
 
-teatro .on ( 'open', require ( './open' ) );
+teatro .on ( 'participant', require ( './participant' ) );
+
+ teatro .on ( 'open', require ( './open' ) ( key ) );
 
 process .on ( 'SIGINT', () => {
 
 console .error ( '#SIGINT' );
 
-teatro .close ();
+teatro .close ( key );
 
 } );
 
@@ -44,16 +41,20 @@ console .error ( '#exit', code );
 
 } );
 
+process .stdout .on ( 'close', () => {
+
+console .error ( 'bye' );
+
+teatro .close ( key );
+
+} );
+
 process .stdout .on ( 'error', ( error ) => {
 
 console .error ( '#error', '#stdout', '#code', error .code, '#message', error .message );
 
-teatro .close ();
+teatro .close ( key );
 
 } );
 
-teatro .on ( 'error', ( error ) => {
-
-console .error ( '#error', '#teatro', '#code', error .code, '#message', error .message );
-
-} );
+teatro .open ( options );

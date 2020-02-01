@@ -20,7 +20,7 @@ const book = {};
 const Stamp = require ( './Stamp' ) ();
 const venue = {};
 
-Object .defineProperty ( teatro, 'close', require ( './close' ) ( server ) );
+Object .defineProperty ( teatro, 'close', require ( './close' ) ( server, options .lock ) );
 
 Object .defineProperty ( teatro, 'issue', require ( './issue' ) ( book, Stamp, venue ) );
 Object .defineProperty ( teatro, 'retrieve', require ( './retrieve' ) ( book ) );
