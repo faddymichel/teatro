@@ -1,63 +1,41 @@
-const { spawn } = require ( 'child_process' );
-const _producer = require ( './producer' );
 const Play = require ( './Play' );
 
-module .exports = function __host ( _ ) {
+module .exports = ( venue ) => {
 
-return function _host ( socket ) {
+const descriptor = {};
 
-const host = this;
+descriptor .enumerable = true;
+descriptor .value = function host ( scenario, signature ) {
 
-socket .send ( '#play #host' );
-socket .send ( '?command' );
+const teatro = this;
 
-socket .once ( 'message', ( argv ) => {
+if ( typeof scenario !== 'function' )
+teatro .emit ( 'error', new TypeError ( "scenario must be of type 'function'." ) );
 
-argv = argv
-.trim ()
-.split ( ' ' );
-
-_ .subprocess = spawn ( argv [ 0 ], argv .slice ( 1 ) );
-
-host .emit ( 'prepare', _ .subprocess );
-
-if ( _ .subprocess .pid ) {
-
-_ .owner = Symbol ();
-_ .count = 1;
-
-const play = new Play ( _ );
+const key = Symbol ();
+const play = new Play ( scenario, signature );
 
 play .on ( 'ticket', ( stamp ) => {
 
 play .once ( 'end', () => {
 
-_ .Ticket [ _ .cancel ] ( stamp, _ .owner );
+teatro .cancel ( stamp, play .signature );
 
 } );
 
 } );
 
-const stamp = _ .Ticket [ _ .issue ] ( _producer ( play ), _ .owner );
+Object .defineProperty ( venue, key, {
 
-play .emit ( 'ticket', stamp );
-socket .send ( '#ticket #issue #producer ' + stamp );
-host .emit ( 'play', play );
- 
-}
-
-else {
-
-socket .send ( '#command #false' );
-
-}
-
-_ .socket = socket;
-
-host .emit ( 'end', _ );
+configurable: true,
+value: play
 
 } );
+
+return key;
 
 };
+
+return descriptor;
 
 };

@@ -3,84 +3,109 @@
 
 This is an Experimental Version and is not recommended, by all means,
 to be used in Production Environments!
-## Name
-
-Teatro - Play the Shell through WebSocket Tickets
-## Synopsis
-
-```
-teatro [ --host=<HOST> | -H <HOST> ] [ --port=<PORT> | -P <PORT> ]
-```
 ## Description
 
-Teatro is a WebSocket Server where Shell Child-Processes can be created and accessed through Tickets.
+Teatro is a WebSocket Server that creates Plays which can be accessed through Tickets.
 
+### Constructor
 
-When running `teatro` shell command,
-a WebSocket Server is created and starts listening on the specified host and port waiting for a WebSocket Client to connect;
-`localhost:1313` is the default value and can be changed using `--host | -H` and `--port | -P`.
-Teatro, then, prints `#ticket #issue #host <STAMP>` to the Standard Output;
-where `<STAMP>` is the value used by a WebSocket Client to play the Host Ticket.
+```new Teatro ()```
 
-### On Client-Side, It All Begins by Being Ushered In
+### Prototype
 
-When a Client connects to Teatro,
-Teatro sends `#play #usher` to the Client informing it that the Usher Ticket is playing.
-The Usher sends `?ticket` asking the Client for a `<STAMP>` value.
-Depending on the received value,
-the Usher retrieves the requested Ticket and plays it;
-or responds with `#false` if the Ticket was not found.
+#### Teatro .prototype .open ( options )
 
-At first, only the `<STAMP>` for the Host Ticket is available in Teatro.
-Supposing that the Client has this `<STAMP>` on hand, somehow, and provides it to the Usher,
-The Host will play and Usher leaves for now.
+* `options <Object>` An options object that configures the created instance of Teatro while it is opening.
+* `options .server <Object>` WebSocket Server options. Refer to [websockets/ws](https://github.com/websockets/ws)
+* `options .lock <Symbol>` The lock which will be used by the `close` method.
 
-### Time to Host Child-Processes; Or Shall It Be Called Plays?
+The prototype's open method prepares the Teatro instance for hosting and ending Plays, issuing, cancelling and retrieving Tickets,
+and playing a scenario for a Participant Websocket when passing a valid Ticket.
 
-Since it is the Host playing now, `#play #host` is sent to the Client.
-The Host, then, sends `?command`.
-When the Client responds with a command,
-the Host attempts to start a new Child-Process/Play in which the command would start running.
-If the Play starts successfully,
-the Host issues a Producer Ticket and responds to the Client with `#ticket #issue #producer <STAMP>`.
-Or, responds with `#false` otherwise.
-Finally, the Host leaves and the Usher is back to play.
+### Events
 
-In case of success,
-the Client would probably provide the Usher with the newly given `<STAMP>` so that the Producer Ticket plays.
+#### Event: 'open'
 
-### Put Everything in Order before Playing
+This event is emitted when the Teatro is open and ready.
 
-Similar to prior tickets,
-`#play #producer` is sent;
-informing the Client that the Producer is playing.
-The Producer asks the Client for an order to execute by sending `?order`.
-The client may write one of the following orders:
+#### Event: 'participant'
 
-* ``` issue <ROLE> ```
-This will issue a new Ticket for the specified `<ROLE>`;
-where `producer`, `actor` and `audience` are the allowed values of `<ROLE>`.
+* `participant <DuplexStream>` A DuplexStream for reading and writing data from and to a connected WebSocket.
 
-* ``` cancel <STAMP> ```
-This will cancel the Ticket related to the specified `<STAMP>`,
-only if, the `<STAMP>` is related to an existing Ticket and the Ticket was issued for the Play the Producer is responsible for.
-Note, if all Producer Tickets issued for a play are cancelled, the play will end immediately.
+This event is emitted whenever a new WebSocket is connected to the instance of Teatro.
 
-* ``` end ```
-This will end the play and cancel all of its Tickets.
+#### Event: 'close'
 
-Provided that the Play is running and its various Tickets can be issued and cancelled by the Producer,
-nothing is left except accessing the Play through Actor and Audience Tickets.
+This event is emitted after closing the instance of Teatro.
 
-### Now, Play! Or, Just Sit and Watch!
+#### Event: 'error'
 
-`#play #actor` and `#play #audience` would be sent to the Client
-when it is ushered in through Actor and Audience Tickets, respectively.
+* `error <Error>` The raised error.
 
-Data sent from the Actor via the WebSocket would be written to the Standard Input of the Child-Process/Play;
-while data read from the Standard Output and Standard Error of the Child-Process/Play would be sent to the Actor.
+This event is emitted whenever an error occurs to the instance of Teatro.
 
-On the other hand, the Audience can only receive data from the Standard Output of the Child-Process/Play.
+### Methods
+
+#### teatro .host ( scenario, signature )
+
+* `scenario <Function>` The scenario that represents the Play to be hosted.
+* `<signature <Symbol>` A signature representing the owner hosting the Play.
+
+##### Return value
+
+* `key <Symbol>` The key to the Play.
+
+This method hosts a Play on the instance of Teatro.
+
+#### teatro .end ( key, signature )
+
+* `key <Symbol>` The key to the Play that was returned by calling `teatro .host ()`.
+* `signature <Symbol>` The signature of the owner of the hosted Play.
+
+##### Return value
+
+* `ended <boolean>` A boolean value representing whether the Play was ended successfully or not.
+
+This method ends a hosted Play on the instance of Teatro.
+
+#### teatro .issue ( key )
+
+* `key <Symbol>` The key to the hosted Play.
+
+##### Return value
+
+* `stamp <string | boolean>` A unique string used later to retrieve and cancel the created ticket or false if failed to create the ticket.
+
+This method issues a Ticket for a hosted Play on the instance of Teatro.
+
+#### teatro .retrieve ( stamp )
+
+* `stamp <string>` The stamp corresponding to the requested Ticket.
+
+##### Return value
+
+* `ticket <Ticket | boolean>` The requested ticket or false if failed to retrieve the ticket.
+
+This method retrieves a Ticket to a hosted Play on the instance of Teatro.
+
+#### teatro .cancel ( stamp, signature )
+
+* `stamp <Symbol>` The stamp corresponding to the requested Ticket.
+* `signature <Symbol>` The signature of the owner of the Play.
+
+##### Return value
+
+* `cancelled <boolean>` A boolean representing whether the Ticket was cancelled successfully or not.
+
+This method cancels an issued Ticket for a Play hosted on the instance of Teatro.
+
+#### teatro .play ( participant, ticket )
+
+* `participant <DuplexStream>` The Participant WebSocket Stream.
+* `ticket <Ticket>` The ticket to the hosted Play.
+
+This method retrieves the Scenario function of the hosted Play found in the passed Ticket.
+The Scenario function is, then, called with Participant WebSocket as its parameter and the scope of `this` is set to the instance of the Teatro Object.
 ## Author
 
 Faddy Michel Samaan

@@ -1,31 +1,39 @@
-const EventEmitter = require ( 'events' );
- 
-const Play = module .exports = function Play ( _ ) {
+const Emitter = require ( 'events' );
+
+const Play = module .exports = function Play ( scenario, signature ) {
 
 const play = this;
 
-EventEmitter .call ( play );
+Emitter .call ( play );
 
-Object .assign ( play, _ );
+Object .keys ( play ) .forEach ( ( property ) => {
 
-play .subprocess .stdin .setEncoding ( 'utf8' );
-play .subprocess .stdout .setEncoding ( 'utf8' );
-play .subprocess .stderr .setEncoding ( 'utf8' );
- 
-play .subprocess .on ( 'close', () => {
+const descriptor = Object .getOwnPropertyDescriptor ( play, property );
+descriptor .enumerable = false;
+Object .defineProperty ( play, property, descriptor );
 
-play .emit ( 'end' );
+} );
+
+Object .defineProperty ( play, 'scenario', {
+
+value: scenario
+
+} );
+
+Object .defineProperty ( play, 'signature', {
+
+value: signature
 
 } );
 
 };
 
-Play .prototype = Object .create ( EventEmitter .prototype );
+Play .prototype = Object .create ( Emitter .prototype );
 
 Object .defineProperty ( Play .prototype, 'constructor', {
 
 value: Play,
-enumerable: false,
-writable: true
+writable: true,
+enumerable: false
 
 } );

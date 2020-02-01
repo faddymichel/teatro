@@ -13,29 +13,25 @@ port: argv .port
 
 };
 
-const teatro = new Teatro ( options );
+const key = options .lock = Symbol ();
 
-teatro .on ( 'host', ( stamp, host ) => {
+const teatro = new Teatro ();
 
-console .log ( '#ticket', '#issue', '#host', stamp );
+teatro .on ( 'error', ( error ) => {
 
-host .on ( 'play', ( { subprocess } ) => {
-
-teatro .on ( 'close', () => {
-
-subprocess .kill ();
+console .error ( '#error', '#teatro', '#code', error .code, '#message', error .message );
 
 } );
 
-} );
+teatro .on ( 'participant', require ( './participant' ) );
 
-} );
+ teatro .on ( 'open', require ( './open' ) ( key ) );
 
 process .on ( 'SIGINT', () => {
 
 console .error ( '#SIGINT' );
 
-teatro .close ();
+teatro .close ( key );
 
 } );
 
@@ -45,16 +41,20 @@ console .error ( '#exit', code );
 
 } );
 
+process .stdout .on ( 'close', () => {
+
+console .error ( 'bye' );
+
+teatro .close ( key );
+
+} );
+
 process .stdout .on ( 'error', ( error ) => {
 
 console .error ( '#error', '#stdout', '#code', error .code, '#message', error .message );
 
-teatro .close ();
+teatro .close ( key );
 
 } );
 
-teatro .on ( 'error', ( error ) => {
-
-console .error ( '#error', '#teatro', '#code', error .code, '#message', error .message );
-
-} );
+teatro .open ( options );

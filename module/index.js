@@ -1,18 +1,29 @@
-const $ = require ( './symbol' );
+const Emitter = require ( 'events' );
 
-const Teatro = module .exports = require ( './Teatro' );
+const Teatro = module .exports = function Teatro ( options ) {
 
-Object .defineProperty ( Teatro .prototype, $ .ticket, require ( './ticket' ) );
+const teatro = this;
 
-[
+Emitter .call ( teatro );
 
-'close',
-'whenOpen',
-'whenParticipant',
-'whenError'
+Object .keys ( teatro ) .forEach ( ( property ) => {
 
-] .forEach ( ( property ) => {
-
-Object .defineProperty ( Teatro .prototype, property, require ( './' + property ) );
+const descriptor = Object .getOwnPropertyDescriptor ( teatro, property );
+descriptor .enumerable = false;
+Object .defineProperty ( teatro, property, descriptor );
 
 } );
+
+};
+
+Teatro .prototype = Object .create ( Emitter .prototype );
+
+Object .defineProperty ( Teatro .prototype, 'constructor', {
+
+value: Teatro,
+enumerable: false,
+writable: true
+
+} );
+
+Object .defineProperty ( Teatro .prototype, 'open', require ( './open' ) );
