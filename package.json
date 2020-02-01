@@ -1,9 +1,36 @@
 {
-  "name": "pass",
+  "name": "teatro",
   "version": "1.0.0",
-  "author": "Faddy Michel Samaan <faddy.michel@gmail.com>",
+  "description": "Play the Shell through WebSockets",
+  "author": "Faddy Michel Samaan <faddy@teatro13.com>",
+  "main": "./module/index.js",
+  "bin": "./cli.js",
+  "keywords": [
+    "ws",
+    "websocket",
+    "linux",
+    "unix",
+    "shell",
+    "bash",
+    "process",
+    "spawn",
+    "child process",
+    "subprocess",
+    "command",
+    "experimental"
+  ],
+  "homepage": "https://github.com/teatro13/teatro",
+  "repository": "github:teatro13/teatro",
+  "bugs": "https://github.com/teatro13/teatro/issues",
+  "license": "MIT",
+  "files": [
+    "./cli.js",
+"./argv.js",
+    "./module/*.js",
+"./browser/*"
+  ],
   "dependencies": {
-    "ws": "^7.2.0"
-  },
-  "bin": "./cli.js"
+    "ws": "^7.2.0",
+    "yargs": "^15.0.2"
+  }
 }

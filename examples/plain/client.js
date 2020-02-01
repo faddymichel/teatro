@@ -8,11 +8,19 @@ const header = document .createElement ( 'header' );
 article .appendChild ( header );
 
 const h1 = document .createElement ( 'h1' );
-h1 .textContent = 'psmd13 / pass';
+h1 .textContent = 'teatro13 / teatro';
 header .appendChild ( h1 );
 
 const section = document .createElement ( 'section' );
 article .appendChild ( section );
+
+const append = function append ( content ) {
+
+const p = document .createElement ( 'p' );
+p .textContent = content;
+section .appendChild ( p );
+ 
+};
 
 const footer = document .createElement ( 'footer' );
 article .appendChild ( footer );
@@ -39,9 +47,21 @@ ws .onmessage = ( event ) => {
 
 console .log ( '#message', event .data );
 
-const p = document .createElement ( 'p' );
-p .textContent = event .data;
-section .appendChild ( p );
+if ( event .data instanceof Blob ) {
+
+const reader = new FileReader ();
+ reader .onload = () => {
+
+append ( reader .result );
+
+};
+reader .readAsText ( event .data );
+
+} else {
+
+append ( event .data );
+
+}
 
 };
 

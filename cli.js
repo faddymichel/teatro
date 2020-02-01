@@ -2,22 +2,59 @@
 
 'use strict';
 
-const server = require ( 'server' );
+const argv = require ( './argv.js' );
+const Teatro = require ( './' );
 
-process .on ( 'SIGINT', ()=> {
+const options = {};
+options .server = {
 
-console .log ( 'closing server ...' );
+host: argv .host,
+port: argv .port
 
-server .close ( () => {
+};
 
-server .passes .forEach ( ( pass ) => {
+const key = options .lock = Symbol ();
 
-pass .kill ();
+const teatro = new Teatro ();
 
-console .log ( 'killed Pass:', pass .pid, '...' );
+teatro .on ( 'error', ( error ) => {
+
+console .error ( '#error', '#teatro', '#code', error .code, '#message', error .message );
 
 } );
 
-} );
+teatro .on ( 'participant', require ( './participant' ) );
+
+ teatro .on ( 'open', require ( './open' ) ( key ) );
+
+process .on ( 'SIGINT', () => {
+
+console .error ( '#SIGINT' );
+
+teatro .close ( key );
 
 } );
+
+process .on ( 'exit', ( code ) => {
+
+console .error ( '#exit', code );
+
+} );
+
+process .stdout .on ( 'close', () => {
+
+console .error ( 'bye' );
+
+teatro .close ( key );
+
+} );
+
+process .stdout .on ( 'error', ( error ) => {
+
+console .error ( '#error', '#stdout', '#code', error .code, '#message', error .message );
+
+teatro .close ( key );
+
+} );
+
+teatro .open ( options );
