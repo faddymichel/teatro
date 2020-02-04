@@ -1,0 +1,21 @@
+{
+  "name": "@teatro13/teatro",
+  "version": "1.0.0",
+  "description": "NodeJS Module for Hosting and Issuing Tickets for WebSocket Plays",
+  "author": "Faddy Michel Samaan <faddy@teatro13.com>",
+  "keywords": [
+    "ws",
+    "websocket",
+    "experimental"
+  ],
+  "homepage": "https://github.com/teatro13/teatro",
+  "repository": "github:teatro13/teatro",
+  "bugs": "https://github.com/teatro13/teatro/issues",
+  "license": "MIT",
+  "files": [
+    "./*.js"
+  ],
+  "dependencies": {
+    "ws": "^7.2.1"
+  }
+}

@@ -1,22 +1,20 @@
 {
-  "name": "teatro",
+  "name": "@teatro13/ttr",
   "version": "1.0.0",
-  "description": "Play the Shell through WebSockets",
+  "description": "Command-Line Interface for Hosting and Issuing Tickets for WebSocket Plays",
   "author": "Faddy Michel Samaan <faddy@teatro13.com>",
-  "main": "./module/index.js",
-  "bin": "./cli.js",
+  "bin": {
+    "ttr": "./index.js",
+    "teatro": "./index.js"
+  },
   "keywords": [
     "ws",
     "websocket",
+    "cli",
     "linux",
     "unix",
     "shell",
     "bash",
-    "process",
-    "spawn",
-    "child process",
-    "subprocess",
-    "command",
     "experimental"
   ],
   "homepage": "https://github.com/teatro13/teatro",
@@ -24,13 +22,10 @@
   "bugs": "https://github.com/teatro13/teatro/issues",
   "license": "MIT",
   "files": [
-    "./cli.js",
-"./argv.js",
-    "./module/*.js",
-"./browser/*"
+    "./*.js"
   ],
   "dependencies": {
-    "ws": "^7.2.0",
-    "yargs": "^15.0.2"
+    "@teatro13/teatro": "file:../module",
+    "yargs": "^15.1.0"
   }
 }

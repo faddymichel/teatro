@@ -3,7 +3,7 @@
 'use strict';
 
 const argv = require ( './argv.js' );
-const Teatro = require ( './' );
+const Teatro = require ( '@teatro13/teatro' );
 
 const options = {};
 options .server = {
