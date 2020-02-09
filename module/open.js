@@ -11,7 +11,7 @@ const raise = ( error ) => {
 teatro .emit ( 'error', error );
 
 };
-const server = new ws .Server ( options .server );
+const server = new ws .Server ( options .ws );
 
 server .on ( 'error', raise );
 server .on ( 'listening', () => {
