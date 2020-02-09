@@ -1,2 +1,2 @@
-node_modules
-man
+*node_modules
+*man

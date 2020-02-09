@@ -17,7 +17,6 @@ prompt: '\n?order\n... '
 
 interface .on ( 'error', ( error ) => {
 
-console .error ( 'yallah!' );
 teatro .emit ( 'error', error );
 
 } );
