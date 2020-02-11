@@ -4,7 +4,7 @@
   "description": "Example Teatro with Yallah Play hosted",
   "main": "teatro.js",
   "dependencies": {
-    "@teatro13/teatro": "^1.0.4"
+    "@teatro13/teatro": "^1.0.5"
   },
   "devDependencies": {},
   "scripts": {
