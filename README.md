@@ -9,6 +9,11 @@ Teatro is a WebSocket Server for hosting Plays on the NodeJS runtime.
 A Play can be described by a Scenario which is simply a JavaScript function with a WebSocket, resembling a Participant, passed as a parameter.
 After hosting a Play, the Host can issue Tickets so Participants can access it.
 For each issued Ticket, there is a Stamp, a unique identifier, corresponding to it which is the only way to retrieve the Ticket.
+## Installation
+
+```
+npm install @teatro13/teatro
+```
 ## API Reference
 
 ### module .exports
