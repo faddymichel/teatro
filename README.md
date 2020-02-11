@@ -135,7 +135,7 @@ The Scenario function is, then, called with Participant WebSocket as its paramet
 	```
 	node examples/yallah/teatro.js
 	```
-1. Open the HTML file found on `examples/plain/client.html` with a compatible browser.
+1. Open the HTML file found in `examples/plain/client.html` with a compatible browser.
 1. Play!
 ## Author
 
