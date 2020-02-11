@@ -132,13 +132,17 @@ The Scenario function is, then, called with Participant WebSocket as its paramet
 	```
 	git clone https://github.com/teatro13/teatro.git
 	```
-1. Change directory to the root of the repository:
+1. Change directory to the `yallah` example found in the `examples` directory:
 	```
-	cd teatro
+	cd <PATH_TO_TEATRO_REPO>/examples/yallah
+	```
+1. Install the `yallah` example using npm:
+	```
+	npm install
 	```
 1. Run the Yallah Example:
 	```
-	node examples/yallah/teatro.js
+	node ./
 	```
 1. Open the HTML file found in `examples/plain/client.html` with a compatible browser.
 1. Play!
