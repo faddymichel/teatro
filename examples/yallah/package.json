@@ -1,0 +1,15 @@
+{
+  "name": "yallah",
+  "version": "1.0.0",
+  "description": "Example Teatro with Yallah Play hosted",
+  "main": "teatro.js",
+  "dependencies": {
+    "@teatro13/teatro": "^1.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Faddy Michel Samaan",
+  "license": "MIT"
+}
