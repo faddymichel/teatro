@@ -3,13 +3,22 @@
 
 This is an Experimental Version and is not recommended, by all means,
 to be used in Production Environments!
-## Overview
+## Description
 
 Teatro is a WebSocket Server for hosting Plays on the NodeJS runtime.
 A Play can be described by a Scenario which is simply a JavaScript function with a WebSocket, resembling a Participant, passed as a parameter.
 After hosting a Play, the Host can issue Tickets so Participants can access it.
 For each issued Ticket, there is a Stamp, a unique identifier, corresponding to it which is the only way to retrieve the Ticket.
-## Description
+## API Reference
+
+### module .exports
+
+This module exports the Teatro class.
+It can be accessed using:
+
+```
+const Teatro = require ( '@teatro13/teatro' );
+```
 
 ### Constructor
 
@@ -112,6 +121,22 @@ This method cancels an issued Ticket for a Play hosted on the instance of Teatro
 
 This method retrieves the Scenario function of the hosted Play found in the passed Ticket.
 The Scenario function is, then, called with Participant WebSocket as its parameter and the scope of `this` is set to the instance of the Teatro Object.
+## Example
+
+- Clone the Git repository of Teatro:
+	```
+	git clone https://github.com/teatro13/teatro.git
+	```
+- Change directory to the root of the repository:
+	```
+	cd teatro
+	```
+- Run the Yallah Example:
+	```
+	node examples/yallah/teatro.js
+	```
+- Open the HTML file found on `examples/plain/client.html` with a compatible browser.
+- Play!
 ## Author
 
 ### Faddy Michel Samaan
