@@ -33,7 +33,7 @@ break;
 
 default:
 
-participant .write ( 'I said YALLAH!' );
+participant .write ( 'What is your problem?' );
 
 }
 
