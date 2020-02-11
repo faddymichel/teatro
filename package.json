@@ -1,6 +1,6 @@
 {
   "name": "@teatro13/teatro",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "WebSocket Server for hosting Plays and accessing them through Tickets on the NodeJS runtime.",
   "author": "Faddy Michel Samaan <faddy@teatro13.com>",
   "keywords": [
