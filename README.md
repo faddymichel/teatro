@@ -123,20 +123,20 @@ This method retrieves the Scenario function of the hosted Play found in the pass
 The Scenario function is, then, called with Participant WebSocket as its parameter and the scope of `this` is set to the instance of the Teatro Object.
 ## Example
 
-- Clone the Git repository of Teatro:
+1. Clone the Git repository of Teatro:
 	```
 	git clone https://github.com/teatro13/teatro.git
 	```
-- Change directory to the root of the repository:
+1. Change directory to the root of the repository:
 	```
 	cd teatro
 	```
-- Run the Yallah Example:
+1. Run the Yallah Example:
 	```
 	node examples/yallah/teatro.js
 	```
-- Open the HTML file found on `examples/plain/client.html` with a compatible browser.
-- Play!
+1. Open the HTML file found on `examples/plain/client.html` with a compatible browser.
+1. Play!
 ## Author
 
 ### Faddy Michel Samaan
