@@ -6,7 +6,7 @@ to be used in Production Environments!
 ## Description
 
 It all starts from the Playwriter; who must have programming skills along with creativity.
-The Playwriter writes the different Scenarios of the Play to be hosted on Teatro so that each Scenario focuses on a specific type of Participants.
+The Playwriter writes different Scenarios of a Play to be hosted on Teatro so that each Scenario focuses on a specific type of Participants.
 A Scenario is a JavaScript function running on the NodeJS runtime with a Participant and a Ticket passed as parameters.
 After writing and hosting Scenarios, Tickets can be issued for a Scenario where Ticket is the Accessibility method for a Participant to participate in a Play.
 Participants
