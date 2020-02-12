@@ -5,10 +5,24 @@ This is an Experimental Version and is not recommended, by all means,
 to be used in Production Environments!
 ## Description
 
-Teatro is a WebSocket Server for hosting Plays on the NodeJS runtime.
-A Play can be described by a Scenario which is simply a JavaScript function with a WebSocket, resembling a Participant, passed as a parameter.
-After hosting a Play, the Host can issue Tickets so Participants can access it.
-For each issued Ticket, there is a Stamp, a unique identifier, corresponding to it which is the only way to retrieve the Ticket.
+It all starts from the Playwriter; who must have programming skills along with creativity.
+The Playwriter writes the different Scenarios of the Play to be hosted on Teatro so that each Scenario focuses on a specific type of Participants.
+A Scenario is a JavaScript function running on the NodeJS runtime with a Participant and a Ticket passed as parameters.
+After writing and hosting Scenarios, Tickets can be issued for a Scenario where Ticket is the Accessibility method for a Participant to participate in a Play.
+Participants
+(Clients which can be a Web Browser such as Chrome and Firefox, Mobile App running on iOS or Android, etc)
+connect to Teatro (Server) through the WebSocket protocol of communication
+(Read about WebSocket on [Wikipedia](https://en.wikipedia.org/wiki/WebSocket)).
+Since WebSocket opens a separate channel between the Server and each Client, making it possible for both sides to send/receive data to/from the other side at any time,
+a live experience can be built step-by-step between the Participant and the playing Scenario.
+This way, at each step, the Participant can translate the received data in a format
+(audible, graphical, etc.)
+that suits their physical capabilities and the situation they are facing.
+This provides a smoother User-Experience than the Apps of nowadays since they depend on loading a lot of User-Interface components all together at once,
+providing a crowded User-Experience,
+which makes it hard to translate all of these components into different formats in a smooth way
+(Apps made by Google, Microsoft, Apple, Facebook, Amazon, LinkedIn and all of their Blind followers are obvious examples of such a crowded and poor User-Experience).
+In the end, Teatro aims to move a step forward towards Equality in Usability that is believed to start from the backend before the frontend.
 ## Installation
 
 ```
