@@ -7,13 +7,8 @@ descriptor .value = function establish ( name ) {
 const scenarist = this;
 const scenario = scenarist .scenarios [ name ];
 
-for ( const signature of scenario .signatures ) {
-
-const { establishment } = scenario .scenes [ signature ];
-
+for ( const establishment of scenario .establishments )
 if ( typeof establishment === 'function' )
 establishment .call ( scenario .setting );
-
-}
 
 };

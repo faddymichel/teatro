@@ -1,10 +1,10 @@
-import { descriptor as scene } from './scene.js';
+import { descriptor as cast } from './cast.js';
 
 export const Scenario = function Scenario () {
 
 const scenario = this;
 
-Object .defineProperty ( scenario, 'scenes', {
+Object .defineProperty ( scenario, 'script', {
 
 value: {}
 
@@ -14,7 +14,7 @@ Object .defineProperty ( scenario, 'setting', {
 value: {}
 
 } );
-Object .defineProperty ( scenario, 'signatures', {
+Object .defineProperty ( scenario, 'establishments', {
 
 value: []
 
@@ -22,4 +22,4 @@ value: []
 
 };
 
-Object .defineProperty ( Scenario .prototype, 'scene', scene );
+Object .defineProperty ( Scenario .prototype, 'cast', cast );

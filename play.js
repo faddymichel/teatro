@@ -2,17 +2,22 @@ export const descriptor = {};
 
 descriptor .enumerable = true;
 
-descriptor .value = function play ( event ) {
+descriptor .value = function play ( script ) {
 
 const scenarist = this;
 const scenario = scenarist .scenarios [ scenarist .display ];
-const role = scenario .scenes [ typeof event .scene === 'number' ? event .scene : event .scene .split ( ':' ) [ 0 ] ];
+const role = scenario .script [ script .event ];
 
-if ( role ) {
+const { action } = role ? scenario .script [ role ] : {};
 
-const { action } = scenario .scenes [ role ];
-action .call ( scenario .setting, event );
+return new Promise ( ( cue, blooper ) => {
 
-}
+if ( typeof action === 'function' )
+action .call ( scenario .setting, script, cue, blooper );
+
+else
+blooper ( '#scenarist #action #invalid' );
+
+} );
 
 };
