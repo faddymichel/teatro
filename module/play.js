@@ -2,7 +2,7 @@ module .exports = ( venue ) => {
 
 const descriptor = {};
 
-descriptor .value = function play ( participant, ticket ) {
+descriptor .value = function play ( participant, ticket, ... settings ) {
 
 const teatro = this;
 
@@ -12,7 +12,11 @@ participant .end ( '#play #end' );
 
 } );
 
-venue [ ticket .play ] .scenario .call ( teatro, participant );
+return new Promise ( ( ... directions ) => {
+
+venue [ ticket .play ] .scenario .call ( teatro, participant, ... settings, ... directions );
+
+} );
 
 };
 
