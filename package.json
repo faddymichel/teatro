@@ -29,6 +29,6 @@
     "module/*.js"
   ],
   "dependencies": {
-    "ws": "^7.2.1"
+    "ws": "^7.3.1"
   }
 }

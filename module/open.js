@@ -32,7 +32,8 @@ Object .defineProperty ( teatro, 'play', require ( './play' ) ( venue ) );
 
 server .on ( 'connection', ( socket ) => {
 
-const participant = ws .createWebSocketStream ( socket );
+const participant = socket;
+//ws .createWebSocketStream ( socket );
 
 socket .on ( 'error', raise );
 participant .on ( 'error', raise );
