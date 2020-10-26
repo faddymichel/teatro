@@ -4,16 +4,8 @@ export const Scenario = function Scenario () {
 
 const scenario = this;
 
-Object .defineProperty ( scenario, 'script', {
-
-value: {}
-
-} );
-Object .defineProperty ( scenario, 'setting', {
-
-value: {}
-
-} );
+scenario .script = {};
+scenario .setting = {};
 Object .defineProperty ( scenario, 'establishments', {
 
 value: []
