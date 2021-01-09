@@ -1,42 +1,18 @@
+import Scenario from './scenario/index.js';
+
 export const descriptor = {};
 
-descriptor .enumerable = true;
+descriptor .value = function write ( signature, ... basis ) {
 
-descriptor .value = function write ( selector, tag, attributes, content ) {
+const scenarist = this;
+const scenario = scenarist .read ( signature );
 
-if ( typeof selector !== 'string' || typeof tag !== 'string' )
-return this;
+basis .forEach ( basisSignature => {
 
-const parent = document .querySelector ( selector );
+const basisScenario = scenarist .read ( basisSignature );
 
-if ( !parent )
-return this;
+Object .assign ( scenario, basisScenario );
 
-tag = tag .split ( ' ' );
-let element;
-switch ( tag .length ) {
-
-case 1:
-
-element = document .createElement ( tag );
-
-break;
-case 2:
-element = document .createElementNS ( tag [ 0 ], tag [ 1 ] );
-
-}
-
-if ( typeof attributes === 'object' )
-for ( const attribute in attributes )
-attribute .startsWith ( 'on' ) ?
-element [ attribute ] = attributes [ attribute ] :
-element .setAttribute ( attribute, attributes [ attribute ] );
-
-if ( typeof content === 'string' )
-element .textContent = content;
-
-parent .appendChild ( element );
-
-return this;
+} );
 
 };

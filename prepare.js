@@ -2,10 +2,10 @@ export const descriptor = {};
 
 descriptor .enumerable = true;
 
-descriptor .value = function prepare ( { name, setting, cast, establish }, cue, blooper ) {
+descriptor .value = function prepare ( { signature, setting, cast, establish }, cue, blooper ) {
 
 const scenarist = this;
-const scenario = scenarist .scenarios [ name ];
+const scenario = scenarist .book [ signature ];
 
 if ( ! scenario )
 return blooper ( '#scenario #undefined' );
@@ -16,8 +16,8 @@ scenario .cast ( character );
 Object .assign ( scenario .setting, setting, { scenarist } );
 
 if ( establish )
-scenarist .establish ( name );
+scenarist .establish ( signature );
 
-return cue ();
+cue ();
 
 };

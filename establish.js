@@ -2,10 +2,14 @@ export const descriptor = {};
 
 descriptor .enumerable = true;
 
-descriptor .value = function establish ( name ) {
+descriptor .value = function establish ( signature ) {
 
 const scenarist = this;
-const scenario = scenarist .scenarios [ name ];
+
+const scenario = scenarist .book [ signature ];
+
+if ( ! scenario )
+throw new Error ();
 
 for ( const establishment of scenario .establishments )
 if ( typeof establishment === 'function' )

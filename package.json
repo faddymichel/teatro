@@ -1,13 +1,13 @@
 {
-  "name": "@teatro13/scenarist",
+  "name": "scenarist",
   "version": "1.0.0",
-  "description": "Scenario-based UI framework",
-  "author": "Faddy Michel Samaan <faddy@teatro13.com>",
-  "homepage": "https://github.com/teatro13/scenarist",
-  "repository": "github:teatro13/scenarist",
-  "bugs": "https://github.com/teatro13/scenarist/issues",
+  "description": "Scenario-based framework",
+  "author": "Faddy Michel Samaan <faddy.michel@gmail.com>",
+  "homepage": "https://github.com/faddymichel/scenarist",
+  "repository": "github:faddymichel/scenarist",
+  "bugs": "https://github.com/faddymichel/scenarist/issues",
   "license": "MIT",
- "type": "module",
+  "type": "module",
   "main": "index.js",
   "files": [
     "*.js"
