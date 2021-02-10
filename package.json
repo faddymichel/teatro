@@ -8,7 +8,6 @@
   "bugs": "https://github.com/faddymichel/scenarist/issues",
   "license": "MIT",
   "type": "module",
-  "main": "index.js",
   "files": [
     "*.js"
   ]

@@ -1,20 +1,10 @@
-import Scenarist from '../index.js';
+import { Scenario } from 'scenarist';
 
-const scenarist = new Scenarist ();
-const scenario = scenarist .start ( {
+const scenario = Scenario ();
 
-signature: 'intro',
-scenes: [ {
+scenario (
+() => console .log ( "Hello, World! I'm Scenarist!" ),
+'#hello', '#h'
+);
 
-events: [ 'scenarist' ],
-action: {
-
-hello: () => console .log ( 'Hello, World! This is Scenarist!' )
-
-}
-
-} ]
-
-} );
-
-scenario .play ( 'scenarist', 'hello' );
+process .stdin .on ( 'data', line => scenario ( '#hello' ) );
