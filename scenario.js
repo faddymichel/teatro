@@ -2,56 +2,53 @@ const book = Symbol ();
 
 export default function Scenario () {
 
-const scenario = function scenario ( scene, ... details ) {
+const scenario = function scenario ( ... details ) {
 
-let bookmark, script;
-
-switch ( typeof scene ) {
+switch ( typeof details [ 0 ] ) {
 
 case 'function':
-
-let value = scenario [ book ] || {};
-Object .defineProperty ( scenario, book, { value } );
-
-bookmark = Symbol ();
-value = {};
-script = Object .defineProperty ( scenario [ book ], bookmark, { value } ) [ bookmark ];
-
-value = scene;
-Object .defineProperty ( script, 'action', { value } );
-
-value = {};
-Object .defineProperty ( script, 'setting', { value } );
+case 'object':
 
 for ( const event of details )
 if ( [ 'string', 'symbol' ] .includes ( typeof event ) ) {
 
-Object .defineProperty ( scenario [ book ], event, {
+const descriptor = Object .getOwnPropertyDescriptor ( scenario, event );
 
-configurable: true,
-value: bookmark
+if ( ! descriptor || typeof descriptor === 'object' && descriptor .configurable === true )
+Object .defineProperty ( scenario, event, {
+
+enumerable: true,
+value: details [ 0 ]
 
 } );
 
 }
 
-return bookmark;
+return scenario;
 
 case 'number':
 case 'string':
 case 'symbol':
 
-bookmark = scenario [ book ] [ scene ];
-script = scenario [ book ] [ bookmark ];
+const scene = scenario [ details [ 0 ] ];
 
-if ( typeof script === 'object' && typeof script .action === 'function' )
-return script .action .call ( scenario, scene, ... details );
+switch ( typeof scene ) {
+
+case 'function':
+
+return scenario [ details [ 0 ] ] .call ( scenario, details [ 0 ], ... details );
+
+case 'object':
+
+return Object .assign ( scene, ... details );
+
+}
 
 break;
 
 }
 
-// return scenario ( '$error', 'Scene not found' );
+// return scenario ( '$error', 'details [ 0 ] not found' );
 
 };
 
