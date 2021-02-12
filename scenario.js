@@ -1,4 +1,6 @@
-const book = Symbol ();
+const configurable = true;
+const enumerable = true;
+let value;
 
 export default function Scenario () {
 
@@ -6,21 +8,29 @@ const scenario = function scenario ( ... details ) {
 
 switch ( typeof details [ 0 ] ) {
 
-case 'function':
 case 'object':
+case 'function':
+
+if ( typeof details [ 0 ] === 'object' ) {
+
+value = Scenario ();
+Object .assign ( value, details [ 0 ] );
+
+}
+
+else
+value = details [ 0 ];
 
 for ( const event of details )
 if ( [ 'string', 'symbol' ] .includes ( typeof event ) ) {
 
 const descriptor = Object .getOwnPropertyDescriptor ( scenario, event );
 
-if ( ! descriptor || typeof descriptor === 'object' && descriptor .configurable === true )
-Object .defineProperty ( scenario, event, {
+if ( ! descriptor || typeof descriptor === 'object' && descriptor .configurable === true ) {
 
-enumerable: true,
-value: details [ 0 ]
+Object .defineProperty ( scenario, event, { enumerable, value } );
 
-} );
+}
 
 }
 
@@ -36,19 +46,20 @@ switch ( typeof scene ) {
 
 case 'function':
 
-return scenario [ details [ 0 ] ] .call ( scenario, details [ 0 ], ... details );
+return scene .call ( scenario, ... details .splice ( 1 ) );
 
-case 'object':
+default:
 
-return Object .assign ( scene, ... details );
+value = details [ 1 ];
+
+if ( typeof value !== 'undefined' )
+Object .defineProperty ( scenario, details [ 0 ], { configurable, enumerable, value } );
+
+return scenario [ details [ 0 ] ];
 
 }
 
-break;
-
 }
-
-// return scenario ( '$error', 'details [ 0 ] not found' );
 
 };
 
