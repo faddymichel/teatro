@@ -1,6 +1,6 @@
-import { Scenario } from 'scenarist';
+import Scenarist from 'scenarist';
 
-const nota = Scenario ();
+const nota = Scenarist ();
 
 nota ( {}, 'note', 'record' );
 nota ( {}, 'book', 'notebook', 'binder' );

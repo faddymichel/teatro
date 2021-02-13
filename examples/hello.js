@@ -1,6 +1,6 @@
-import { scenarist, Scenario } from 'scenarist';
+import Scenarist from 'scenarist';
 
-const scenario = Scenario ();
+const scenario = Scenarist ();
 
 scenario ( event => {
 
