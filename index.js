@@ -13,8 +13,12 @@ case 'function':
 
 if ( typeof details [ 0 ] === 'object' ) {
 
-value = Scenarist ();
-Object .assign ( value, details [ 0 ] );
+const _scenario = Scenarist ();
+
+for ( const setting in details [ 0 ] )
+_scenario ( setting, details [ 0 ] [ setting ] );
+
+value = _scenario;
 
 }
 

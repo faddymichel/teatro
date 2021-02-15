@@ -1,26 +1,58 @@
 import Scenarist from 'scenarist';
 
+process .stdin .setEncoding ( 'utf8' );
+process .stdout .setEncoding ( 'utf8' );
+
 const scenario = Scenarist ();
 
-scenario ( event => {
+scenario ( {
 
-switch ( event ) {
+answering: false,
+repeats: 0,
+0: "Hello, there! I'm Scenarist!",
+1: "Again? Okay. Hello, there!",
+2: "This is boring. Hello!",
+Infinity: "No!"
 
-case 'hello':
+}, 'history', 'logic', 'dialogue', 'memory' );
 
-console .log ( "Hello, World! I'm Scenarist!" )
+scenario ( name => {
 
-break;
+const repeats = scenario ( 'history', 'repeats' );
 
-case 'hi':
+process .stdout .write ( `Me: ${
 
-console .log ( "Hi, there! I'm Scenarist!" );
+scenario ( 'logic', repeats )
 
-}
+}` );
 
-}, 'hello', 'hi' );
+scenario ( 'memory', 'repeats', repeats + ( repeats < 2 ? 1 : Infinity ) );
 
-scenario ( 'hello' );
+scenario ( 'name' );
 
-process .stdin .setEncoding ( 'utf8' );
-process .stdin .on ( 'data', line => scenario ( line .trim () ) );
+}, 'hello', 'hi', 'salam' );
+
+scenario ( () => {
+
+process .stdout .write ( "Me: I'm here!" );
+
+if ( scenario ( 'memory', 'answering' ) )
+return;
+
+process .stdout .write ( `
+You: ` );
+
+process .stdin .on ( 'data', line => {
+
+scenario ( ... line .trim () .split ( ' ' ) );
+
+process .stdout .write ( `
+You: ` );
+
+} );
+
+scenario ( 'history', 'answering', true );
+
+}, 'interact', 'answer', 'reply' );
+
+scenario ( 'interact' );

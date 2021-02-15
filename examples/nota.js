@@ -1,5 +1,7 @@
 import Scenarist from 'scenarist';
 
+console .log ( Scenarist );
+
 const nota = Scenarist ();
 
 nota ( {}, 'note', 'record' );
