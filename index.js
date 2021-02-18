@@ -2,9 +2,14 @@ const enumerable = true;
 let configurable;
 let value;
 
-export default function Scenarist () {
+export default function Scenarist ( script = {} ) {
+
+const setting = Object .create ( script );
 
 const scenario = function scenario ( ... details ) {
+
+if ( details .length === 0 )
+return Scenarist ( script );
 
 switch ( typeof details [ 0 ] ) {
 
@@ -15,8 +20,8 @@ if ( typeof details [ 0 ] === 'object' ) {
 
 const _scenario = Scenarist ();
 
-for ( const setting in details [ 0 ] )
-_scenario ( setting, details [ 0 ] [ setting ] );
+for ( const character in details [ 0 ] )
+_scenario ( character, details [ 0 ] [ character ] );
 
 value = _scenario;
 
@@ -34,7 +39,7 @@ const descriptor = Object .getOwnPropertyDescriptor ( scenario, event );
 
 if ( ! descriptor || typeof descriptor === 'object' && descriptor .configurable === true ) {
 
-Object .defineProperty ( scenario, event, { configurable, enumerable, value } );
+Object .defineProperty ( script, event, { configurable, enumerable, value } );
 
 }
 
@@ -46,7 +51,7 @@ case 'number':
 case 'string':
 case 'symbol':
 
-const scene = scenario [ details [ 0 ] ];
+const scene = setting [ details [ 0 ] ];
 
 switch ( typeof scene ) {
 
@@ -60,9 +65,9 @@ value = details [ 1 ];
 configurable = true;
 
 if ( typeof value !== 'undefined' )
-Object .defineProperty ( scenario, details [ 0 ], { configurable, enumerable, value } );
+Object .defineProperty ( setting, details [ 0 ], { configurable, enumerable, value } );
 
-return scenario [ details [ 0 ] ];
+return setting [ details [ 0 ] ];
 
 }
 
