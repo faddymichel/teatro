@@ -47,7 +47,8 @@ const Script = Object .getPrototypeOf ( setting );
 const scenario = function scenario ( ... details ) {
 
 if ( details .length === 0 )
-return Scenarist ( scenario .establishment || Script .constructor, thisScenario );
+return setting;
+//return Scenarist ( scenario .establishment || Script .constructor, thisScenario );
 
 if ( isAction ( details [ 0 ] ) ) {
 
@@ -66,7 +67,8 @@ if ( isAction ( scene ) ) {
 if ( typeof scene === 'object' )
 scene = scenario .setting [ details [ 0 ] ] = Scenarist ( scene, false );
 
-return thisScenario ? scene .call ( scenario, ... details ) : scene ( ... details .splice ( 1 ) );
+return scene .call ( scene .thisScenario ? scenario : setting, ... details .splice ( 1 ) );
+//scene .thisScenario ? scene .call ( scenario, ... details ) : scene ( ... details .splice ( 1 ) );
 
 }
 
@@ -82,10 +84,12 @@ return setting [ details [ 0 ] ];
 
 };
 
+scenario .thisScenario = thisScenario;
 scenario .setting = {};
 
 if ( establishment )
 scenario .establishment = establishment;
+scenario .establish = () => Scenarist ( scenario .establishment || Script .constructor, thisScenario );
 
 return scenario;
 

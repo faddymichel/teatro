@@ -3,9 +3,9 @@ import Scenarist from 'scenarist';
 process .stdin .setEncoding ( 'utf8' );
 process .stdout .setEncoding ( 'utf8' );
 
-const scenario = Scenarist ();
+let scenario = Scenarist ( function () {
 
-scenario ( {
+return {
 
 answering: false,
 repeats: 0,
@@ -14,21 +14,29 @@ repeats: 0,
 2: "This is boring. Hello!",
 Infinity: "No!"
 
-}, 'history', 'logic', 'dialogue', 'memory' );
+};
 
-scenario ( name => {
+} );
 
-const repeats = scenario ( 'history', 'repeats' );
+scenario ( () => {
+
+scenario = scenario .establish ();
+
+process .stdout .write ( "Okay, let's start over!" );
+
+}, 'reset' );
+
+scenario ( () => {
+
+const repeats = scenario ( 'repeats' );
 
 process .stdout .write ( `Me: ${
 
-scenario ( 'logic', repeats )
+scenario ( repeats )
 
 }` );
 
-scenario ( 'memory', 'repeats', repeats + ( repeats < 2 ? 1 : Infinity ) );
-
-scenario ( 'name' );
+scenario ( 'repeats', repeats + ( repeats < 2 ? 1 : Infinity ) );
 
 }, 'hello', 'hi', 'salam' );
 
@@ -36,7 +44,7 @@ scenario ( () => {
 
 process .stdout .write ( "Me: I'm here!" );
 
-if ( scenario ( 'memory', 'answering' ) )
+if ( scenario ( 'answering' ) )
 return;
 
 process .stdout .write ( `
@@ -51,7 +59,7 @@ You: ` );
 
 } );
 
-scenario ( 'history', 'answering', true );
+scenario ( 'answering', true );
 
 }, 'interact', 'answer', 'reply' );
 
