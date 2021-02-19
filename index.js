@@ -1,79 +1,91 @@
-const enumerable = true;
-let configurable;
-let value;
+const error = ( name, message ) => Object .assign ( Error ( message ), { name } );
 
-export default function Scenarist ( script = {} ) {
+const isAction = action => [ 'function', 'object' ] .includes ( typeof action );
 
-const setting = Object .create ( script );
+const cast = ( script, scene, actor, ... doubles ) => {
+
+if ( isAction ( actor ) )
+throw error ( 'ScenaristError#cast', "Couldn't cast actors for scene. Invalid actor." );
+
+script [ actor ] = scene;
+
+for ( const double of doubles )
+if ( ! isAction ( double ) )
+if ( isAction ( scene ) )
+script [ double ] = scene;
+
+else
+Object .defineProperty ( script, double, {
+
+configurable: true,
+enumerable: true,
+get: () => script [ actor ],
+set: scene => script [ actor ] = scene
+
+} );
+
+};
+
+export default function Scenarist ( setting = {}, thisScenario = true ) {
+
+let establishment;
+
+if ( typeof setting === 'function' )
+try {
+
+establishment = setting;
+setting = new setting ();
+
+} catch ( e ) {
+
+throw error ( 'ScenaristError#establish', "Couldn't establish scenario using the passed setting." );
+
+}
+
+const Script = Object .getPrototypeOf ( setting );
 
 const scenario = function scenario ( ... details ) {
 
 if ( details .length === 0 )
-return Scenarist ( script );
+return Scenarist ( scenario .establishment || Script .constructor, thisScenario );
 
-switch ( typeof details [ 0 ] ) {
+if ( isAction ( details [ 0 ] ) ) {
 
-case 'object':
-case 'function':
+details [ 0 ] = typeof details [ 0 ] === 'object' ? Scenarist ( details [ 0 ], thisScenario ) : details [ 0 ];
 
-if ( typeof details [ 0 ] === 'object' ) {
-
-const _scenario = Scenarist ();
-
-for ( const character in details [ 0 ] )
-_scenario ( character, details [ 0 ] [ character ] );
-
-value = _scenario;
-
-}
-
-else
-value = details [ 0 ];
-
-configurable = false;
-
-for ( const event of details )
-if ( [ 'string', 'symbol' ] .includes ( typeof event ) ) {
-
-const descriptor = Object .getOwnPropertyDescriptor ( scenario, event );
-
-if ( ! descriptor || typeof descriptor === 'object' && descriptor .configurable === true ) {
-
-Object .defineProperty ( script, event, { configurable, enumerable, value } );
-
-}
-
-}
+cast ( Script, ... details );
 
 return scenario;
 
-case 'number':
-case 'string':
-case 'symbol':
+}
 
-const scene = setting [ details [ 0 ] ];
+let scene = scenario .setting [ details [ 0 ] ] || setting [ details [ 0 ] ];
 
-switch ( typeof scene ) {
+if ( isAction ( scene ) ) {
 
-case 'function':
+if ( typeof scene === 'object' )
+scene = scenario .setting [ details [ 0 ] ] = Scenarist ( scene, false );
 
-return scene .call ( scenario, ... details .splice ( 1 ) );
+return thisScenario ? scene .call ( scenario, ... details ) : scene ( ... details .splice ( 1 ) );
 
-default:
+}
 
-value = details [ 1 ];
-configurable = true;
+scene = details [ 1 ];
 
-if ( typeof value !== 'undefined' )
-Object .defineProperty ( setting, details [ 0 ], { configurable, enumerable, value } );
+if ( typeof scene === 'object' )
+scene = Scenarist ( scene, false );
+
+if ( typeof scene !== 'undefined' )
+cast ( setting, scene, details [ 0 ], ... details .splice ( 2 ) );
 
 return setting [ details [ 0 ] ];
 
-}
-
-}
-
 };
+
+scenario .setting = {};
+
+if ( establishment )
+scenario .establishment = establishment;
 
 return scenario;
 
