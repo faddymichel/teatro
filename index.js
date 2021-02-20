@@ -1,96 +1,90 @@
-const error = ( name, message ) => Object .assign ( Error ( message ), { name } );
+export default function Scenarist ( setting = {} ) {
 
-const isAction = action => [ 'function', 'object' ] .includes ( typeof action );
+if ( ! setting || typeof setting !== 'object' )
+return;
 
-const cast = ( script, scene, actor, ... doubles ) => {
-
-if ( isAction ( actor ) )
-throw error ( 'ScenaristError#cast', "Couldn't cast actors for scene. Invalid actor." );
-
-script [ actor ] = scene;
-
-for ( const double of doubles )
-if ( ! isAction ( double ) )
-if ( isAction ( scene ) )
-script [ double ] = scene;
-
-else
-Object .defineProperty ( script, double, {
-
-configurable: true,
-enumerable: true,
-get: () => script [ actor ],
-set: scene => script [ actor ] = scene
-
-} );
-
-};
-
-export default function Scenarist ( setting = {}, thisScenario = true ) {
-
-let establishment;
-
-if ( typeof setting === 'function' )
-try {
-
-establishment = setting;
-setting = new setting ();
-
-} catch ( e ) {
-
-throw error ( 'ScenaristError#establish', "Couldn't establish scenario using the passed setting." );
-
-}
-
-const Script = Object .getPrototypeOf ( setting );
-
+const book = {};
 const scenario = function scenario ( ... details ) {
+
+if ( details [ 0 ] === null )
+return;
 
 if ( details .length === 0 )
 return setting;
-//return Scenarist ( scenario .establishment || Script .constructor, thisScenario );
 
-if ( isAction ( details [ 0 ] ) ) {
+if ( typeof details [ 0 ] === 'function' ) {
 
-details [ 0 ] = typeof details [ 0 ] === 'object' ? Scenarist ( details [ 0 ], thisScenario ) : details [ 0 ];
+const _scenario = Scenarist ( Object .create ( setting ) );
 
-cast ( Script, ... details );
+details [ 0 ] .call ( _scenario, ... details .splice ( 1 ) );
+
+return _scenario;
+
+}
+
+if ( typeof details [ 0 ] === 'object' ) {
+
+cast ( setting, ... details );
 
 return scenario;
 
 }
 
-let scene = scenario .setting [ details [ 0 ] ] || setting [ details [ 0 ] ];
-
-if ( isAction ( scene ) ) {
+let scene = book [ details [ 0 ] ] || setting [ details [ 0 ] ];
 
 if ( typeof scene === 'object' )
-scene = scenario .setting [ details [ 0 ] ] = Scenarist ( scene, false );
+scene = book [ details [ 0 ] ] = Scenarist ( scene );
 
-return scene .call ( scene .thisScenario ? scenario : setting, ... details .splice ( 1 ) );
-//scene .thisScenario ? scene .call ( scenario, ... details ) : scene ( ... details .splice ( 1 ) );
-
-}
+if ( typeof scene === 'function' )
+return scene .call ( setting, ... details .splice ( 1 ) );
 
 scene = details [ 1 ];
 
 if ( typeof scene === 'object' )
-scene = Scenarist ( scene, false );
+scene = Scenarist ( scene );
 
 if ( typeof scene !== 'undefined' )
-cast ( setting, scene, details [ 0 ], ... details .splice ( 2 ) );
+cast ( setting, {
+
+value: scene,
+configurable: true,
+enumerable: true,
+writable: true
+
+}, details [ 0 ], ... details .splice ( 2 ) );
 
 return setting [ details [ 0 ] ];
 
 };
 
-scenario .thisScenario = thisScenario;
-scenario .setting = {};
-
-if ( establishment )
-scenario .establishment = establishment;
-scenario .establish = () => Scenarist ( scenario .establishment || Script .constructor, thisScenario );
+scenario .Scenario = Scenarist ( Object .getPrototypeOf ( setting ) );
 
 return scenario;
+
+};
+
+const cast = ( script, descriptor, ... actors ) => {
+
+let actor;
+const { enumerable, configurable } = descriptor;
+
+for ( const double of actors )
+if ( typeof double !== 'object' && typeof double !== 'function' )
+
+if ( actor === undefined ) {
+
+actor = double;
+
+Object .defineProperty ( script, actor, descriptor );
+
+}
+
+else
+Object .defineProperty ( script, double, Object .assign ( { enumerable, configurable }, {
+
+get: () => script [ actor ],
+set: scene => script [ actor ] = scene
+
+} ) );
 
 };
