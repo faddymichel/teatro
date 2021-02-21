@@ -1,66 +1,16 @@
 import Scenarist from 'scenarist';
 
-process .stdin .setEncoding ( 'utf8' );
-process .stdout .setEncoding ( 'utf8' );
+const Hello = Scenarist ();
 
-let scenario = Scenarist ( function () {
+Hello ( 'say', hello => hello ( 'out', 'write', hello ( 'greeting' ) ), 'greet' );
+Hello ( 'out', process .stdin );
 
-return {
+const hello1 = Hello ( hello => hello ( 'greeting', "Hello, there! I'm Scenarist Amir el-Inteqam!\n" ) );
 
-answering: false,
-repeats: 0,
-0: "Hello, there! I'm Scenarist!",
-1: "Again? Okay. Hello, there!",
-2: "This is boring. Hello!",
-Infinity: "No!"
+hello1 ( 'say' );
 
-};
 
-} );
+const hello2 = Hello ( () => {} );
 
-scenario ( () => {
-
-scenario = scenario .establish ();
-
-process .stdout .write ( "Okay, let's start over!" );
-
-}, 'reset' );
-
-scenario ( () => {
-
-const repeats = scenario ( 'repeats' );
-
-process .stdout .write ( `Me: ${
-
-scenario ( repeats )
-
-}` );
-
-scenario ( 'repeats', repeats + ( repeats < 2 ? 1 : Infinity ) );
-
-}, 'hello', 'hi', 'salam' );
-
-scenario ( () => {
-
-process .stdout .write ( "Me: I'm here!" );
-
-if ( scenario ( 'answering' ) )
-return;
-
-process .stdout .write ( `
-You: ` );
-
-process .stdin .on ( 'data', line => {
-
-scenario ( ... line .trim () .split ( ' ' ) );
-
-process .stdout .write ( `
-You: ` );
-
-} );
-
-scenario ( 'answering', true );
-
-}, 'interact', 'answer', 'reply' );
-
-scenario ( 'interact' );
+hello2 ( 'greeting', "Hey! This is Scenarist again! My greetings from the 2nd scenario!\n" );
+hello2 ( 'greet' );
