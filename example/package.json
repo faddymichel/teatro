@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@faddymichel/scenarist": "file:../module"
+  }
+}

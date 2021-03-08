@@ -1,14 +1,12 @@
 {
-  "name": "scenarist",
+  "name": "@faddymichel/scenarist",
   "version": "1.0.0",
-  "description": "Scenario-based framework",
+  "description": "Use Scenarist to wrap a JavaScript Object inside a Scenario; the Object would turn into Subject!",
   "author": "Faddy Michel Samaan <faddy.michel@gmail.com>",
   "homepage": "https://github.com/faddymichel/scenarist",
   "repository": "github:faddymichel/scenarist",
   "bugs": "https://github.com/faddymichel/scenarist/issues",
   "license": "MIT",
-  "type": "module",
-  "files": [
-    "*.js"
-  ]
+  "main": "scenarist.js",
+  "files": "*.js"
 }

@@ -1,6 +1,7 @@
-export default function Scenarist ( setting = {} ) {
+module .exports = function Scenarist ( setting = {} ) {
 
-if ( ! setting || typeof setting !== 'object' )
+if ( ( typeof setting !== 'function' || typeof setting .prototype !== 'object' )
+&& ( ! setting || typeof setting !== 'object' ) )
 return;
 
 const book = {};
@@ -9,38 +10,26 @@ const scenario = function scenario ( ... details ) {
 if ( details [ 0 ] === null )
 return;
 
-if ( details [ 0 ] === scenario )
-return scenario ( ... details .split ( 1 ) );
-
 if ( details .length === 0 )
 return setting;
 
-if ( typeof details [ 0 ] === 'function' ) {
-
-const _scenario = Scenarist ( Object .create ( setting ) );
-const _setting = _scenario ();
-
-Object .assign (
-_setting,
-details [ 0 ] .call ( _setting, _scenario, ... details .splice ( 1 ) ) 
+if ( details [ 0 ] === scenario .signature )
+return Scenarist (
+typeof setting === 'function' ? new setting ( ... details .splice ( 1 ) ) : Object .create ( setting )
 );
-
-return _scenario;
-
-}
 
 if ( typeof details [ 0 ] === 'object' ) {
 
 if ( details [ 0 ] .scenaristable === true && typeof details [ 0 ] .value === 'function' )
 details [ 0 ] .value .scenaristable = true;
 
-cast ( setting, ... details );
+cast ( true, setting, ... details );
 
 return scenario;
 
 }
 
-let scene = setting [ details [ 0 ] ];
+let scene = typeof details [ 0 ] === 'function' ? details [ 0 ] : setting [ details [ 0 ] ];
 let script = book [ details [ 0 ] ];
 
 if ( typeof scene === 'object' ) {
@@ -55,7 +44,7 @@ scene = script;
 if ( typeof scene === 'function' )
 
 if ( scene .scenaristable === true )
-return scene .call ( setting, scenario, ... details .splice ( 1 ) );
+return scene .call ( setting, scenario, ... details .splice ( typeof details [ 0 ] !== 'function' ? 0 : 1 ) );
 
 else
 return scene .call ( setting, ... details .splice ( 1 ) );
@@ -69,29 +58,26 @@ else if ( typeof scene === 'function' && ! scene .scenaristable )
 scene .scenaristable = true;
 
 if ( typeof scene !== 'undefined' )
-cast ( setting, {
-
-value: scene,
-configurable: true,
-enumerable: true,
-writable: true
-
-}, details [ 0 ], ... details .splice ( 2 ) );
+cast ( false, setting, scene, details [ 0 ], ... details .splice ( 2 ) );
 
 return setting [ details [ 0 ] ];
 
 };
 
 scenario .Scenario = Scenarist ( Object .getPrototypeOf ( setting ) );
+scenario .signature = Symbol ();
+scenario .branch = () => scenario ( scenario .signature );
 
 return scenario;
 
 };
 
-const cast = ( script, descriptor, ... actors ) => {
+const cast = ( descriptor, script, scene, ... actors ) => {
 
 let actor;
-const { enumerable, configurable } = descriptor;
+
+if ( descriptor === true )
+var { enumerable, configurable } = scene;
 
 for ( const double of actors )
 
@@ -101,7 +87,11 @@ if ( actor === undefined ) {
 
 actor = double;
 
-Object .defineProperty ( script, actor, descriptor );
+if ( descriptor === true )
+Object .defineProperty ( script, actor, scene );
+
+else
+script [ actor ] = scene;
 
 }
 
