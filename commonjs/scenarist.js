@@ -1,4 +1,10 @@
-module .exports = function Scenarist ( setting = {} ) {
+module .exports = function Scenarist ( setting = {}, symbol = {
+
+start: Symbol (),
+pattern: Symbol (),
+owner: Symbol ()
+
+} ) {
 
 if ( ( typeof setting !== 'function' || typeof setting .prototype !== 'object' )
 && ( ! setting || typeof setting !== 'object' ) )
@@ -13,10 +19,20 @@ return;
 if ( details .length === 0 )
 return setting;
 
-if ( details [ 0 ] === scenario .signature )
+switch ( details [ 0 ] ) {
+
+case scenario .start:
 return Scenarist (
-typeof setting === 'function' ? new setting ( ... details .splice ( 1 ) ) : Object .create ( setting )
+typeof setting === 'function' ? new setting ( ... details .splice ( 1 ) ) : Object .create ( setting ), symbol
 );
+
+case scenario .pattern:
+return scenario .Pattern;
+
+case scenario .owner:
+return scenario .Owner;
+
+}
 
 if ( typeof details [ 0 ] === 'object' ) {
 
@@ -34,8 +50,12 @@ let script = book [ details [ 0 ] ];
 
 if ( typeof scene === 'object' ) {
 
-if ( ! script || script () !== scene )
-script = book [ details [ 0 ] ] = Scenarist ( scene );
+if ( ! script || script () !== scene ) {
+
+script = book [ details [ 0 ] ] = Scenarist ( scene, symbol );
+script .Owner = scenario;
+
+}
 
 scene = script;
 
@@ -61,9 +81,13 @@ return setting [ details [ 0 ] ];
 
 };
 
-scenario .Scenario = Scenarist ( Object .getPrototypeOf ( setting ) );
-scenario .signature = Symbol ();
-scenario .branch = () => scenario ( scenario .signature );
+scenario .owner = symbol .owner || Symbol ();
+
+scenario .pattern = symbol .pattern || Symbol ();
+scenario .Pattern = Scenarist ( Object .getPrototypeOf ( setting ), symbol );
+
+scenario .start = symbol .start || Symbol ();
+scenario .Start = () => scenario ( scenario .start );
 
 return scenario;
 

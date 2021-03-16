@@ -7,6 +7,6 @@
   "repository": "github:faddymichel/scenarist",
   "bugs": "https://github.com/faddymichel/scenarist/issues",
   "license": "MIT",
-  "main": "scenarist.js",
+  "main": "commonjs/scenarist.js",
   "files": "*.js"
 }

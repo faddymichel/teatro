@@ -1,6 +1,10 @@
-const signature = Symbol ();
+export default function Scenarist ( setting = {}, symbol = {
 
-export default function Scenarist ( setting = {} ) {
+start: Symbol (),
+pattern: Symbol (),
+owner: Symbol ()
+
+} ) {
 
 if ( ( typeof setting !== 'function' || typeof setting .prototype !== 'object' )
 && ( ! setting || typeof setting !== 'object' ) )
@@ -15,17 +19,18 @@ return;
 if ( details .length === 0 )
 return setting;
 
-if ( details [ 0 ] === Scenarist .branch ) {
+switch ( details [ 0 ] ) {
 
-let _scenario;
+case scenario .start:
+return Scenarist (
+typeof setting === 'function' ? new setting ( ... details .splice ( 1 ) ) : Object .create ( setting ), symbol
+);
 
-if ( typeof setting === 'function' )
-_scenario = Scenarist ( new setting ( ... details .splice ( 1 ) ) );
+case scenario .pattern:
+return scenario .Pattern;
 
-else
-_scenario = Scenarist ( Object .create ( setting ) );
-
-return _scenario;
+case scenario .owner:
+return scenario .Owner;
 
 }
 
@@ -40,20 +45,17 @@ return scenario;
 
 }
 
-let scene;
-
-if ( typeof details [ 0 ] === 'function' )
-scene = details [ 0 ];
-
-else
-scene = setting [ details [ 0 ] ];
-
+let scene = typeof details [ 0 ] === 'function' ? details [ 0 ] : setting [ details [ 0 ] ];
 let script = book [ details [ 0 ] ];
 
 if ( typeof scene === 'object' ) {
 
-if ( ! script || script () !== scene )
-script = book [ details [ 0 ] ] = Scenarist ( scene );
+if ( ! script || script () !== scene ) {
+
+script = book [ details [ 0 ] ] = Scenarist ( scene, symbol );
+script .Owner = scenario;
+
+}
 
 scene = script;
 
@@ -61,7 +63,7 @@ scene = script;
 
 if ( typeof scene === 'function' )
 
-if ( scene [ signature ] !== true && scene .scenaristable === true )
+if ( scene .scenaristable === true )
 return scene .call ( setting, scenario, ... details .splice ( typeof details [ 0 ] !== 'function' ? 0 : 1 ) );
 
 else
@@ -69,10 +71,7 @@ return scene .call ( setting, ... details .splice ( 1 ) );
 
 scene = details [ 1 ];
 
-if ( typeof scene === 'object' )
-scene = Scenarist ( scene );
-
-else if ( typeof scene === 'function' && ! scene .scenaristable )
+if ( typeof scene === 'function' )
 scene .scenaristable = true;
 
 if ( typeof scene !== 'undefined' )
@@ -82,20 +81,17 @@ return setting [ details [ 0 ] ];
 
 };
 
-Object .defineProperty ( scenario, signature, {
+scenario .owner = symbol .owner || Symbol ();
 
-value: true
+scenario .pattern = symbol .pattern || Symbol ();
+scenario .Pattern = Scenarist ( Object .getPrototypeOf ( setting ), symbol );
 
-} );
-
-scenario .Scenario = Scenarist ( Object .getPrototypeOf ( setting ) );
-scenario .branch = () => scenario ( Scenarist .branch );
+scenario .start = symbol .start || Symbol ();
+scenario .Start = () => scenario ( scenario .start );
 
 return scenario;
 
 };
-
-Scenarist .branch = Symbol ();
 
 const cast = ( descriptor, script, scene, ... actors ) => {
 
