@@ -1,7 +1,7 @@
-cat scenarist-script.js | tee scenarist.js scenarist.mjs > /dev/null
+cat script.js | tee index.js index.mjs > /dev/null
 
-echo '' >> scenarist.js
-echo 'module .exports = Scenarist;' >> scenarist.js
+echo '' >> index.js
+echo 'module .exports = Scenarist;' >> index.js
 
-echo '' >> scenarist.mjs
-echo 'export default Scenarist;' >> scenarist.mjs
+echo '' >> index.mjs
+echo 'export default Scenarist;' >> index.mjs

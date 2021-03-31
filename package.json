@@ -1,12 +1,18 @@
 {
-  "name": "@faddymichel/scenarist",
+  "name": "@blindoutofmind/scenarist",
   "version": "1.0.0",
   "description": "Use Scenarist to wrap a JavaScript Object inside a Scenario; the Object would turn into Subject!",
-  "author": "Faddy Michel Samaan <faddy.michel@gmail.com>",
-  "homepage": "https://github.com/faddymichel/scenarist",
-  "repository": "github:faddymichel/scenarist",
-  "bugs": "https://github.com/faddymichel/scenarist/issues",
+  "author": "Faddy Michel Samaan <blindoutofmind@gmail.com> (https://twitter.com/blindoutofmind)",
+  "homepage": "https://github.com/blindoutofmind/scenarist",
+  "repository": "github:blindoutofmind/scenarist",
+  "bugs": "https://github.com/blindoutofmind/scenarist/issues",
   "license": "MIT",
-  "main": "scenarist.js",
-  "files": "*js"
+  "main": "index.js",
+  "files": "*js",
+  "scripts": {
+    "test": "./usage.js"
+  },
+  "devDependencies": {
+    "@blindoutofmind/scenarist": "file:./"
+  }
 }
