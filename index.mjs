@@ -64,4 +64,4 @@ return scenario;
 
 } ) .bind ( () => ( {} ) );
 
-module .exports = Scenarist;
+export default Scenarist;

@@ -63,5 +63,3 @@ establishment ( scenario, signature );
 return scenario;
 
 } ) .bind ( () => ( {} ) );
-
-module .exports = Scenarist;
