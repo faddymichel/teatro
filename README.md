@@ -1,6 +1,6 @@
 # Scenarist Amir el-Inteqam
 
-## Use Scenarist to wrap a JavaScript Object inside a Scenario; the Object would turn into Subject!
+## Use Scenarist to Wrap a JavaScript Object inside a Scenario Function; the Object Would Turn into Subject!
 
 ### In Memory of The Architect Michel Wadie Samaan
 

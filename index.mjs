@@ -1,159 +1,67 @@
-const Scenarist = function Scenarist ( setting = {}, special ) {
+const Scenarist = ( function Scenarist ( setting = {}, signature = Symbol (), establishment ) {
 
-if ( ( typeof setting !== 'function' || typeof setting .prototype !== 'object' )
-&& ( ! setting || typeof setting !== 'object' ) )
+if ( typeof setting !== 'object' && typeof setting !== 'function' )
 return;
 
-const book = {};
+const play = typeof this === 'function' ? this () : this;
+const passage = {};
 const scenario = function scenario ( ... details ) {
 
-if ( details [ 0 ] === null )
-return;
+const [ order ] = details;
+details = details .splice ( 1 );
 
-if ( details .length === 0 )
+if ( order === signature )
 return setting;
 
-const prepend = details .indexOf ( scenario .prepend );
+if ( typeof order === 'object' ) {
 
-if ( prepend > -1 )
-return scenario ( ... details .splice ( prepend + 1 ), ... details .splice ( 0, details .length - 1 ) );
+const bookmark = Symbol ();
+Object .defineProperty ( play, bookmark, order );
 
-const play = details .indexOf ( scenario .play );
+for ( const direction of details )
 
-if ( play > -1 )
-return scenario ( ... details .splice ( 0, play ), scenario ( ... details [ 1 ] ), ... details .splice ( 2 ) );
+if ( typeof direction !== 'function' && typeof direction !== 'object' )
+Object .defineProperty ( play, direction, {
 
-if ( typeof details [ 0 ] === 'object' ) {
+configurable: order .configurable === true,
+get: () => play [ bookmark ],
+set: value => play [ bookmark ] = value
 
-if ( details [ 0 ] .scenaristable === true && typeof details [ 0 ] .value === 'function' )
-details [ 0 ] .value .scenaristable = true;
-
-return scenario ( scenario .describe, details [ 1 ], details [ 0 ], ... details .splice ( 2 ) );
-
-}
-
-else if ( typeof details [ 0 ] === 'function' ) {
-
-details [ 0 ] .scenaristable = true;
-
-return scenario ( scenario .assign, details [ 1 ], details [ 0 ], ... details .splice ( 2 ) );
+} );
 
 }
 
-let scene, script;
+const _setting = setting [ order ];
 
-switch ( details [ 0 ] ) {
+if ( _setting && typeof _setting === 'object' ) {
 
-case scenario .script:
-return scenario;
+let _scenario = passage [ order ];
 
-case scenario .describe:
-if ( scenario .strict === true )
-return setting [ details [ 1 ] ];
+if ( ! _scenario || _scenario ( signature ) !== _setting )
+_scenario = passage [ order ] = Scenarist .call ( Object .create ( play ), _setting, signature, establishment );
 
-Object .defineProperty ( setting, details [ 1 ], details [ 2 ] );
-
-return scenario ( scenario .cast, details [ 1 ], ... details .splice ( 3 ) );
-
-case scenario .assign:
-if ( scenario .strict === true )
-return setting [ details [ 1 ] ];
-
-setting [ details [ 1 ] ] = details [ 2 ];
-
-return scenario ( scenario .cast, details [ 1 ], ... details .splice ( 3 ) );
-
-case scenario .cast:
-let actor = details [ 1 ];
-let { enumerable, configurable } = Object .getOwnPropertyDescriptor ( setting, actor );
-
-for ( const double of details .splice ( 2 ) )
-Object .defineProperty ( setting, double, Object .assign ( { enumerable, configurable }, {
-
-get: () => setting [ actor ],
-set: scene => setting [ actor ] = scene
-
-} ) );
-
-return;
-
-case scenario .pattern:
-scene = scenario .Pattern;
-break;
-
-case scenario .owner:
-scene = scenario .Owner;
-break;
-
-case scenario .live:
-
-if ( typeof details [ 1 ] !== 'function' )
-return;
-
-scene = details [ 1 ];
-details = details .splice ( 2 );
-break;
-
-default:
-
-scene = setting [ details [ 0 ] ];
-script = book [ details [ 0 ] ];
-
-if ( typeof scene === 'object' ) {
-
-if ( ! script || script () !== scene ) {
-
-script = book [ details [ 0 ] ] = Scenarist ( scene, special );
-script .Owner = scenario;
+return _scenario ( ... details );
 
 }
 
-scene = script;
+if ( typeof play [ order ] === 'function' )
+return play [ order ] .call ( { scenario, order }, ... details );
 
-}
+if ( play [ order ] )
+return play [ order ] = details .length > 0 ? details [ 0 ] : play [ order ];
 
-}
+if ( typeof setting [ order ] === 'function' )
+return setting [ order ] .call ( setting, ... details );
 
-if ( typeof scene === 'function' )
-
-if ( scene .scenaristable === true )
-return scene .call ( setting, scenario, ... details );
-
-else
-return scene .call ( setting, ... details .splice ( 1 ) );
-
-if ( details [ 1 ] === scenario .branch )
-details [ 1 ] = scenario .Branch ( ... typeof setting === 'function' ? details .splice ( 2 ) : [] ) ();
-
-scene = details [ 1 ];
-
-if ( typeof scene !== 'undefined' )
-scenario ( scenario .assign, ... details );
-
-return setting [ details [ 0 ] ];
+return setting [ order ];
 
 };
 
-Object .assign ( scenario, {
-
-play: Symbol (),
-cast: Symbol (),
-assign: Symbol (),
-describe: Symbol (),
-branch: Symbol (),
-pattern: Symbol (),
-owner: Symbol (),
-script: Symbol (),
-prepend: Symbol (),
-live: Symbol ()
-
-}, special );
-
-scenario .Pattern = Scenarist ( Object .getPrototypeOf ( setting ), special );
-scenario .Branch = ( ... details ) => Scenarist ( typeof setting === 'function' ? new setting ( ... details ) : Object .create ( setting ), special );
+if ( typeof establishment === 'function' )
+establishment ( scenario, signature );
 
 return scenario;
 
-};
+} ) .bind ( () => ( {} ) );
 
 export default Scenarist;
