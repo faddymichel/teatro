@@ -1,4 +1,4 @@
-const Scenarist = ( function Scenarist ( setting = {}, signature = Symbol (), establishment ) {
+const Scenarist = function Scenarist ( setting = {}, signature = Symbol (), establishment ) {
 
 if ( typeof setting !== 'object' && typeof setting !== 'function' )
 return;
@@ -62,6 +62,6 @@ establishment ( scenario, signature );
 
 return scenario;
 
-} ) .bind ( () => ( {} ) );
+} .bind ( () => ( {} ) );
 
 export default Scenarist;
