@@ -1,66 +1,133 @@
 const Scenarist = function Scenarist ( setting = {}, signature = Symbol (), establishment ) {
 
-if ( typeof setting !== 'object' && typeof setting !== 'function' )
+if ( ! setting || typeof setting !== 'object' && typeof setting !== 'function' && setting !== null )
 return;
 
 const play = typeof this === 'function' ? this () : this;
 const passage = {};
-const scenario = function scenario ( ... details ) {
 
-const [ order ] = details;
-details = details .splice ( 1 );
+const $ = function scenario ( ... situation ) {
 
-if ( order === signature )
+if ( situation .length === 0 )
+return $;
+
+const [ actor, ... details ] = situation;
+
+if ( typeof actor === 'function' )
+return describe ( ... situation );
+
+if ( actor instanceof Array )
+return [ $ ( ... actor ), $ ( ... details ) ];
+
+if ( actor === signature )
 return setting;
 
-if ( typeof order === 'object' ) {
+const { character } = play [ actor ] || { character: actor };
+let scene = setting [ character ];
 
-const bookmark = Symbol ();
-Object .defineProperty ( play, bookmark, order );
+if ( typeof scene === 'object' )
+scene = passage [ character ] = passage [ character ] && passage [ character ] ( signature ) === scene ?
+passage [ character ] :
+Scenarist .call ( Object .create ( play ), scene, signature, establishment );
 
-for ( const direction of details )
+if ( typeof scene === 'function' )
+scene = scene .call ( setting, ... details );
 
-if ( typeof direction !== 'function' && typeof direction !== 'object' )
-Object .defineProperty ( play, direction, {
+const { action, cue, blooper } = play [ character ] || {};
 
-configurable: order .configurable === true,
-get: () => play [ bookmark ],
-set: value => play [ bookmark ] = value
+if ( action )
+( async function play () {
 
-} );
+return action .call ( this, ... details ), this;
 
-}
+} ) .bind ( { $, scene, character, actor, transition: [] } ) ()
+.then ( order => cue .length ? cue .forEach ( character => $ ( character, ... order .transition ) ) : undefined )
+.catch ( error => blooper .length ? blooper .forEach ( character => $ ( character, error ) ) : undefined );
 
-const _setting = setting [ order ];
-
-if ( _setting && typeof _setting === 'object' ) {
-
-let _scenario = passage [ order ];
-
-if ( ! _scenario || _scenario ( signature ) !== _setting )
-_scenario = passage [ order ] = Scenarist .call ( Object .create ( play ), _setting, signature, establishment );
-
-return _scenario ( ... details );
-
-}
-
-if ( typeof play [ order ] === 'function' )
-return play [ order ] .call ( { scenario, order }, ... details );
-
-if ( play [ order ] )
-return play [ order ] = details .length > 0 ? details [ 0 ] : play [ order ];
-
-if ( typeof setting [ order ] === 'function' )
-return setting [ order ] .call ( setting, ... details );
-
-return setting [ order ];
+return scene;
 
 };
 
-if ( typeof establishment === 'function' )
-establishment ( scenario, signature );
+function describe ( ... details ) {
 
-return scenario;
+if ( details .length < 2 )
+return;
+
+const { actor } = this || {};
+const [ action, character, ... cast ] = details;
+
+if ( typeof action !== 'function' )
+return;
+
+const script = play [ character ] = { character, action };
+
+for ( const signal of [ 'cue', 'blooper' ] )
+script [ signal ] = script [ $ [ signal ] ] = script [ `un${ signal }` ] = script [ $ [ `un${ signal }` ] ] = [];
+
+return direct ( character, ... cast );
+
+}
+
+function direct ( ... details ) {
+
+if ( details .length < 2 )
+return;
+
+const [ character, actor ] = details;
+
+if ( ! play [ character ] )
+return;
+
+Object .defineProperty ( play, actor, {
+
+configurable: true,
+get: () => play [ character ],
+set: value => play [ character ] = value
+
+} );
+
+return direct ( character, ... details .splice ( 2 ) );
+
+}
+
+for ( const key of [ 'describe', 'direct', 'cue', 'blooper', 'uncue', 'unblooper' ] )
+$ [ key ] = Symbol ();
+
+describe ( describe, $ .describe );
+describe ( direct, $ .direct );
+describe ( function cue ( actor, ... cast ) {
+
+const script = play [ actor ];
+const signal = this .actor;
+
+if ( script ) {
+
+const characters = cast
+.filter ( actor => ! script [ signal ] .includes ( script .character ) )
+.map ( actor => play [ actor ] .character );
+
+if ( [ $ .cue, $ .blooper ] .includes ( signal ) )
+for ( const character of characters )
+script [ signal ] .push ( character );
+
+else
+for ( const character of characters ) {
+
+const index = script [ signal ] .indexOf ( character );
+
+if ( index > -1 )
+delete script [ signal ] [ index ];
+
+}
+
+}
+
+}, $ .cue, $ .blooper, $ .uncue, $ .unblooper );
+
+if ( typeof establishment === 'function' )
+establishment ( $, signature );
+
+return $;
 
 } .bind ( () => ( {} ) );
 
