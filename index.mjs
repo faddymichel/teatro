@@ -36,11 +36,7 @@ scene = scene .call ( setting, ... details );
 const { action, cue, blooper } = play [ character ] || {};
 
 if ( action )
-( async function play () {
-
-return action .call ( this, ... details ), this;
-
-} ) .bind ( { $, scene, character, actor, transition: [] } ) ()
+( async ( order = Object .defineProperty ( { $, scene, character, actor }, 'transition', { enumerable: true, value: [] } ) ) => ( action .call ( order, ... details ), order ) ) ()
 .then ( order => cue .length ? cue .forEach ( character => $ ( character, ... order .transition ) ) : undefined )
 .catch ( error => blooper .length ? blooper .forEach ( character => $ ( character, error ) ) : undefined );
 
@@ -95,32 +91,21 @@ $ [ key ] = Symbol ();
 
 describe ( describe, $ .describe );
 describe ( direct, $ .direct );
-describe ( function cue ( actor, ... cast ) {
+describe ( function stream ( actor, ... cast ) {
 
-const script = play [ actor ];
-const signal = this .actor;
+if ( ! play [ actor ] )
+return;
 
-if ( script ) {
-
-const characters = cast
-.filter ( actor => ! script [ signal ] .includes ( script .character ) )
+const { character } = play [ actor ];
+const stream = play [ actor ] [ this .actor ];
+const characters = cast .filter ( actor => ! stream .includes ( character ) )
 .map ( actor => play [ actor ] .character );
 
-if ( [ $ .cue, $ .blooper ] .includes ( signal ) )
-for ( const character of characters )
-script [ signal ] .push ( character );
+if ( [ $ .cue, $ .blooper ] .includes ( this .actor ) )
+stream .push ( ... characters );
 
 else
-for ( const character of characters ) {
-
-const index = script [ signal ] .indexOf ( character );
-
-if ( index > -1 )
-delete script [ signal ] [ index ];
-
-}
-
-}
+stream .forEach ( () => characters .includes ( stream [ stream .length - 1 ] ) ? stream .pop () : stream .shift ( stream .pop () ) );
 
 }, $ .cue, $ .blooper, $ .uncue, $ .unblooper );
 
