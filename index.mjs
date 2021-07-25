@@ -1,9 +1,10 @@
-const Scenarist = function Scenarist ( setting = {}, signature = Symbol (), establishment ) {
+const Scenarist = function Scenarist ( setting = {}, establishment ) {
 
 if ( ! setting || typeof setting !== 'object' && typeof setting !== 'function' && setting !== null )
 return;
 
-const play = typeof this === 'function' ? this () : this;
+const { play, appendix } = typeof this === 'function' ? this () : this;
+appendix .setting = setting;
 const passage = {};
 
 const $ = function scenario ( ... situation ) {
@@ -19,16 +20,28 @@ return describe ( ... situation );
 if ( actor instanceof Array )
 return [ $ ( ... actor ), $ ( ... details ) ];
 
-if ( actor === signature )
-return setting;
+if ( actor === appendix .signature )
+return appendix;
 
 const { character } = play [ actor ] || { character: actor };
 let scene = setting [ character ];
 
 if ( typeof scene === 'object' )
-scene = passage [ character ] = passage [ character ] && passage [ character ] ( signature ) === scene ?
+scene = passage [ character ] = passage [ character ] && passage [ character ] ( appendix .signature ) .setting === scene ?
 passage [ character ] :
-Scenarist .call ( Object .create ( play ), scene, signature, establishment );
+Scenarist .call ( {
+
+play: Object .create ( play ),
+appendix: {
+
+signature: appendix .signature,
+depth: appendix .depth + 1,
+binder: $
+
+}
+
+
+}, scene, establishment );
 
 if ( typeof scene === 'function' )
 scene = scene .call ( setting, ... details );
@@ -110,10 +123,20 @@ stream .forEach ( () => characters .includes ( stream [ stream .length - 1 ] ) ?
 }, $ .cue, $ .blooper, $ .uncue, $ .unblooper );
 
 if ( typeof establishment === 'function' )
-establishment ( $, signature );
+establishment ( $, appendix );
 
 return $;
 
-} .bind ( () => ( {} ) );
+} .bind ( () => ( {
+
+play: {},
+appendix: {
+
+signature: Symbol (),
+depth: 0
+
+}
+
+} ) );
 
 export default Scenarist;
