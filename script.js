@@ -4,52 +4,67 @@ if ( ! setting || typeof setting !== 'object' && typeof setting !== 'function' &
 return;
 
 const { play, appendix } = typeof this === 'function' ? this () : this;
-appendix .setting = setting;
-const passage = {};
 
-const $ = function scenario ( ... situation ) {
+Object .defineProperty ( appendix, 'setting', { value: setting } );
 
-if ( situation .length === 0 )
+const prologue = Object .getPrototypeOf ( play );
+const $ = function scenario ( ... act ) {
+
+if ( act .length === 0 )
 return $;
 
-const [ actor, ... details ] = situation;
-
-if ( typeof actor === 'function' )
-return describe ( ... situation );
-
-if ( actor instanceof Array )
-return [ $ ( ... actor ), $ ( ... details ) ];
+const [ actor, ... details ] = act;
 
 if ( actor === appendix .signature )
 return appendix;
 
+if ( typeof actor === 'function' )
+return describe ( ... act );
+
+if ( actor instanceof Array )
+return [ $ ( ... actor ), $ ( ... details ) ];
+
+if ( typeof actor === 'object' )
+return Object .keys ( ( _act = actor ) )
+.map ( _actor => $ ( _actor, ... ( _act [ _actor ] instanceof Array ? _act [ _actor ] : [ _act [ _actor ] ] ) ) );
+
 const { character } = play [ actor ] || { character: actor };
 let scene = setting [ character ];
 
-if ( typeof scene === 'object' )
-scene = passage [ character ] = passage [ character ] && passage [ character ] ( appendix .signature ) .setting === scene ?
-passage [ character ] :
-Scenarist .call ( {
+if ( typeof scene === 'object' && ! ( play [ character ] && play [ character ] .setting === scene ) ) {
 
-play: Object .create ( play ),
-appendix: {
+describe ( Scenarist .call ( {
 
-signature: appendix .signature,
-depth: appendix .depth + 1,
-binder: $
+play: Object .create ( prologue ),
+appendix: Object .defineProperties ( {}, {
+
+signature: { enumerable: true, value: appendix .signature },
+depth: { enumerable: true, value: appendix .depth + 1 },
+binder: { enumerable: true, value: $ }
+
+} )
+
+}, setting [ character ], establishment ), character );
+
+play [ character ] .setting = scene;
 
 }
-
-
-}, scene, establishment );
 
 if ( typeof scene === 'function' )
 scene = scene .call ( setting, ... details );
 
+else if ( typeof scene !== 'object' && details .length > 0 && appendix .writable === true )
+scene = setting [ character ] = details .length === 1 ? details [ 0 ] : details;
+
 const { action, cue, blooper } = play [ character ] || {};
 
 if ( action )
-( async ( order = Object .defineProperty ( { $, scene, character, actor }, 'transition', { enumerable: true, value: [] } ) ) => ( action .call ( order, ... details ), order ) ) ()
+( async ( order = Object .defineProperty ( { $, scene, character, actor }, 'transition', {
+
+enumerable: true,
+value: []
+
+} ) ) => ( action .call ( order, ... details ), order ) ) ()
 .then ( order => cue .length ? cue .forEach ( character => $ ( character, ... order .transition ) ) : undefined )
 .catch ( error => blooper .length ? blooper .forEach ( character => $ ( character, error ) ) : undefined );
 
@@ -68,21 +83,21 @@ const [ action, character, ... cast ] = details;
 if ( typeof action !== 'function' )
 return;
 
-const script = play [ character ] = { character, action };
+const script = ( actor === appendix .prologue ? prologue : play ) [ character ] = { character, action };
 
-for ( const signal of [ 'cue', 'blooper' ] )
-script [ signal ] = script [ $ [ signal ] ] = script [ `un${ signal }` ] = script [ $ [ `un${ signal }` ] ] = [];
+for ( const actor of [ 'cue', 'blooper' ] )
+script [ actor ] = script [ $ [ actor ] ] = script [ `un${ actor }` ] = script [ $ [ `un${ actor }` ] ] = [];
 
 return direct ( character, ... cast );
 
 }
 
-function direct ( ... details ) {
+function direct ( ... direction ) {
 
-if ( details .length < 2 )
+if ( direction .length < 2 )
 return;
 
-const [ character, actor ] = details;
+const [ character, actor, ... details ] = direction;
 
 if ( ! play [ character ] )
 return;
@@ -90,21 +105,15 @@ return;
 Object .defineProperty ( play, actor, {
 
 configurable: true,
-get: () => play [ character ],
-set: value => play [ character ] = value
+get: () => play [ character ]
 
 } );
 
-return direct ( character, ... details .splice ( 2 ) );
+return direct ( character, ... details );
 
 }
 
-for ( const key of [ 'describe', 'direct', 'cue', 'blooper', 'uncue', 'unblooper' ] )
-$ [ key ] = Symbol ();
-
-describe ( describe, $ .describe );
-describe ( direct, $ .direct );
-describe ( function stream ( actor, ... cast ) {
+function stream ( actor, ... cast ) {
 
 if ( ! play [ actor ] )
 return;
@@ -114,13 +123,20 @@ const stream = play [ actor ] [ this .actor ];
 const characters = cast .filter ( actor => ! stream .includes ( character ) )
 .map ( actor => play [ actor ] .character );
 
-if ( [ $ .cue, $ .blooper ] .includes ( this .actor ) )
+if ( [ appendix .cue, appendix .blooper ] .includes ( this .actor ) )
 stream .push ( ... characters );
 
 else
 stream .forEach ( () => characters .includes ( stream [ stream .length - 1 ] ) ? stream .pop () : stream .shift ( stream .pop () ) );
 
-}, $ .cue, $ .blooper, $ .uncue, $ .unblooper );
+}
+
+for ( const key of [ 'describe', 'prologue', 'direct', 'cue', 'blooper', 'uncue', 'unblooper' ] )
+Object .defineProperty ( appendix, key, { enumerable: true, value: Symbol () } );
+
+describe ( describe, appendix .describe, appendix .prologue );
+describe ( direct, appendix .direct );
+describe ( stream, appendix .cue, appendix .blooper, appendix .uncue, appendix .unblooper );
 
 if ( typeof establishment === 'function' )
 establishment ( $, appendix );
@@ -129,12 +145,12 @@ return $;
 
 } .bind ( () => ( {
 
-play: {},
-appendix: {
+play: Object .create ( {} ),
+appendix: Object .defineProperties ( {}, {
 
-signature: Symbol (),
-depth: 0
+signature: { enumerable: true, value: Symbol () },
+depth: { enumerable: true, value: 0 }
 
-}
+} )
 
 } ) );
