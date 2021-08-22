@@ -3,5 +3,12 @@
 const Scenarist = require ( 'scenarist' );
 const $ = Scenarist ( { console } );
 
-$ ( 'console', 'log', "Yallah!" );
-$ ( 'console', 'log', "Yallah!" );
+$ ( 'console', function () {
+
+console .log ( this .$ );
+console .log ( 'salah abdallah!' );
+
+}, 'log' );
+
+$ ( 'console', 'log', "yallah?!" );
+$ ( 'console', 'log', "yallah?!" );
