@@ -1,31 +1,13 @@
 #!/usr/bin/env node
 
 const Scenarist = require ( './' );
-const $ = Scenarist ( { 
+const setting = Object .create ( Math );
+const play = {};
+const $ = Scenarist ( setting, play );
 
-console,
-x: 1,
-y: 2,
-z: 3,
-name: [ 'Faddy', 'Michel' ],
-square: {
+play .climax = ( { setting, direction } ) => setting .hasOwnProperty ( direction ) ? setting [ direction ] : undefined;
 
-length: 10,
-area: function area () {
+Object .defineProperty ( setting, 'r', { get: () => setting .random } );
 
-console .log ( this );
-
-return this .length ** 2;
-
-}
-
-}
-
-}, scene => ( console .log ( scene ), scene .resolution ) );
-
-$ ( 'console', 'log', "Yallah?" );
-$ ( 'console', 'log', "Yallah?", $ ( 'x' ) );
-$ ( 'console', 'log', "Yallah?", $ ( 'y' ) );
-$ ( 'console', 'log', "Yallah?", $ ( 'z' ) );
-
-$ ( 'console', 'log', "area:", $ ( 'square', 'area' ) );
+console .log ( $ ( 'random' ) );
+console .log ( $ ( 'r' ) );

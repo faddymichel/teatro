@@ -1,79 +1,54 @@
-const Scenarist = function Scenarist ( setting = {}, director ) {
+const Scenarist = function Scenarist ( ... details ) {
 
 const scenarist = this;
 
-return scenarist .start ( setting, director );
+return scenarist ( ... details );
 
 } .bind ( ( () => {
 
-const scenarist = function scenarist ( ... script ) {
+const scenario = function scenario ( ... act ) {
 
-const plot = this;
-const scene = Object .create ( plot );
-scene .conflict = scene .resolution = plot .resolution;
+const scene = typeof this === 'function' ? this () : this;
+const { play } = scene;
+let direction;
 
 switch ( typeof scene .conflict ) {
 
 case 'object':
 
-if ( ! scene .conflict [ _ .setting ] ?.isPrototypeOf ( scene .conflict ) )
-plot .resolution = scene .conflict = plot .conflict [ plot .event ] = scenarist .write ( scene .conflict, plot .resolution [ _ .prologue ] );
+[ direction, ... act ] = act;
 
-scene .setting = scene .conflict [ _ .setting ];
-scene .event = script .splice ( 0, 1 ) [ 0 ];
-scene .resolution = scene .conflict [ scene .event ];
+scene .setting = scene .conflict;
+scene .direction = direction; 
+scene .conflict = typeof play .climax === 'function' ? play .climax ( scene, ... act ) : scene .setting [ direction ];
+
+scene .location .push ( direction );
 
 break;
 
 case 'function':
 
-scene .resolution = scene .conflict .call ( plot .setting, ... script );
+scene .resolution = scene .conflict .call ( scene .scenaristable === true ? scene : scene .setting, ... act );
 
 default:
 
-return typeof scene .director === 'function' ?
-scene .director ( scene ) :
-scene .resolution;
+scene .resolution = scene .resolution || scene .conflict;
+
+return typeof play .reversal === 'function' ? play .reversal ( scene, ... act ) : scene .resolution;
 
 }
 
-return scenarist .call ( scene, ... script );
+return scenario .call ( scene, ... act );
 
 };
 
-const _ = {
+return function scenarist ( conflict = {}, play ) {
 
-setting: Symbol (),
-prologue: Symbol ()
+const establishment = { play };
 
-};
-
-scenarist .start = function start ( setting, director ) {
-
-const play = {
-
-director,
-conflict: setting,
-resolution: scenarist .write ( setting )
+return establishment .scenario = scenario .bind ( () => Object .setPrototypeOf ( { conflict, location: [] }, establishment ) );
 
 };
-
-return play .scenarist = scenarist .bind ( play );
-
-};
-
-scenarist .write = function write ( setting, prologue = Object .create ( setting ) ) {
-
-const scenario = Object .create ( prologue );
-
-scenario [ _ .setting ] = setting;
-scenario [ _ .prologue ] = prologue;
-
-return scenario;
-
-};
-
-return scenarist;
 
 } ) () );
 
