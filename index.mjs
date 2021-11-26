@@ -1,54 +1,109 @@
-const Scenarist = function Scenarist ( ... details ) {
+const Scenarist = function Scenarist ( setting ) {
 
-const scenarist = this;
-
-return scenarist ( ... details );
+return this ( { setting } );
 
 } .bind ( ( () => {
 
-const scenario = function scenario ( ... act ) {
+const scenario = async function scenario ( direction, ... details ) {
 
-const scene = typeof this === 'function' ? this () : this;
-const { play } = scene;
-let direction;
+const production = typeof this === 'function' ? this () : this;
+const { setting, play, scene } = production;
 
 switch ( typeof scene .conflict ) {
 
-case 'object':
+case 'undefined':
 
-[ direction, ... act ] = act;
+Object .assign ( scene, { direction, details } );
 
-scene .setting = scene .conflict;
-scene .direction = direction; 
-scene .conflict = typeof play .climax === 'function' ? play .climax ( scene, ... act ) : scene .setting [ direction ];
+if ( typeof setting .establishment === 'function' )
+setting .establishment ( scene );
 
-scene .location .push ( direction );
+if ( ( scene .conflict = setting [ scene .direction ] ) === undefined )
+return;
+
+scene .location .push ( scene .direction );
 
 break;
 
-case 'function':
+case 'object':
 
-scene .resolution = scene .conflict .call ( scene .scenaristable === true ? scene : scene .setting, ... act );
+if ( ! scene .conflict )
+return scene .conflict;
+
+return scenarist ( {
+
+setting: scene .conflict,
+location: scene .location .slice (),
+previous: scene
+
+} ) ( ... scene .details );
 
 default:
 
-scene .resolution = scene .resolution || scene .conflict;
+if ( scene .cue )
+play [ scene .cue ] = play [ scene .cue ] || new Climax ();
 
-return typeof play .reversal === 'function' ? play .reversal ( scene, ... act ) : scene .resolution;
+scene .resolution = ( play [ scene .cue ] ?.resolution || Promise .resolve () )
+.then ( transition => {
+
+Object .assign ( scene, { transition } );
+
+const climax = play [ scene .signal ] = play [ scene .signal ] || new Climax ();
+const resolution = typeof scene .conflict === 'function' ?
+scene .conflict .call ( typeof setting === 'function' ? new setting ( scene ) : setting, ... scene .details ) :
+scene .resolution || scene .conflict;
+
+climax .resolve ( resolution );
+
+return resolution;
+
+} );
+
+return typeof setting .reversal === 'function' ? setting .reversal ( Object .assign ( scene, {
+
+plot: scenarist ( {
+
+setting, play,
+location: scene .location .slice (),
+cue: scene .signal,
+previous: scene
+
+} )
+
+} ) ) : scene .resolution;
 
 }
 
-return scenario .call ( scene, ... act );
+return scenario .call ( production, scene .direction, ... scene .details );
 
 };
 
-return function scenarist ( conflict = {}, play ) {
+const Climax = function Climax () {
 
-const establishment = { play };
-
-return establishment .scenario = scenario .bind ( () => Object .setPrototypeOf ( { conflict, location: [] }, establishment ) );
+this .resolution = new Promise ( resolve => { Object .assign ( this, { resolve } ) } );
 
 };
+
+const scenarist = function scenarist ( { setting, play, location, previous, cue } ) {
+
+const bound = scenario .bind ( () => ( {
+
+setting,
+play: play || {},
+scene: Object .defineProperty ( { location: location || [], cue, previous }, 'scenario', {
+
+enumerable: true,
+get: () => bound
+
+} )
+
+} ) );
+
+return Object .defineProperty ( bound, 'name', { name: 'Scenarist' } );
+
+};
+
+return scenarist;
 
 } ) () );
 
