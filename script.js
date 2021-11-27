@@ -15,7 +15,7 @@ case 'undefined':
 
 Object .assign ( scene, { direction, details } );
 
-if ( typeof setting === 'function' )
+if ( typeof setting === 'function' && setting === setting ?.prototype ?.constructor )
 production .setting = new setting ( scene );
 
 if ( ( scene .conflict = production .setting [ scene .direction ] ) === undefined )
