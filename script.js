@@ -15,10 +15,10 @@ case 'undefined':
 
 Object .assign ( scene, { direction, details } );
 
-if ( typeof setting .establishment === 'function' )
-setting .establishment ( scene );
+if ( typeof setting === 'function' )
+production .setting = new setting ( scene );
 
-if ( ( scene .conflict = setting [ scene .direction ] ) === undefined )
+if ( ( scene .conflict = production .setting [ scene .direction ] ) === undefined )
 return;
 
 scene .location .push ( scene .direction );
@@ -26,10 +26,12 @@ scene .location .push ( scene .direction );
 break;
 
 case 'object':
+case 'function':
 
 if ( ! scene .conflict )
 return scene .conflict;
 
+if ( typeof scene .conflict === 'object' || scene .conflict === scene .conflict ?.prototype ?.constrructor )
 return scenarist ( {
 
 setting: scene .conflict,
@@ -49,9 +51,7 @@ scene .resolution = ( play [ scene .cue ] ?.resolution || Promise .resolve () )
 Object .assign ( scene, { transition } );
 
 const climax = play [ scene .signal ] = play [ scene .signal ] || new Climax ();
-const resolution = typeof scene .conflict === 'function' ?
-scene .conflict .call ( typeof setting === 'function' ? new setting ( scene ) : setting, ... scene .details ) :
-scene .resolution || scene .conflict;
+const resolution = typeof scene .conflict === 'function' ? scene .conflict .call ( setting, ... scene .details ) : scene .resolution || scene .conflict;
 
 climax .resolve ( resolution );
 
@@ -59,7 +59,7 @@ return resolution;
 
 } );
 
-return typeof setting .reversal === 'function' ? setting .reversal ( Object .assign ( scene, {
+return typeof scene .reversal === 'function' ? scene .reversal ( Object .assign ( scene, {
 
 plot: scenarist ( {
 
