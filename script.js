@@ -6,8 +6,8 @@ return this ( { setting } );
 
 const scenario = async function scenario ( direction, ... details ) {
 
-const production = typeof this === 'function' ? this () : this;
-const { setting, play, scene } = production;
+const script = typeof this === 'function' ? this () : this;
+const { setting, play, scene } = script;
 
 switch ( typeof scene .conflict ) {
 
@@ -16,9 +16,9 @@ case 'undefined':
 Object .assign ( scene, { direction, details } );
 
 if ( typeof setting === 'function' && setting === setting ?.prototype ?.constructor )
-production .setting = new setting ( scene );
+script .setting = new setting ( scene );
 
-if ( ( scene .conflict = production .setting [ scene .direction ] ) === undefined )
+if ( ( scene .conflict = script .setting [ scene .direction ] ) === undefined )
 return;
 
 scene .location .push ( scene .direction );
@@ -31,8 +31,9 @@ case 'function':
 if ( ! scene .conflict )
 return scene .conflict;
 
-if ( typeof scene .conflict === 'object' || scene .conflict === scene .conflict ?.prototype ?.constrructor )
-return scenarist ( {
+if ( typeof scene .conflict === 'object' || scene .conflict === scene .conflict ?.prototype ?.constrructor ) {
+
+scene .resolution = scenarist ( {
 
 setting: scene .conflict,
 location: scene .location .slice (),
@@ -40,22 +41,26 @@ previous: scene
 
 } ) ( ... scene .details );
 
+scene .conflict = false;
+}
+
 default:
 
 if ( scene .cue )
 play [ scene .cue ] = play [ scene .cue ] || new Climax ();
 
-scene .resolution = ( play [ scene .cue ] ?.resolution || Promise .resolve () )
+scene .resolution = scene .resolution || ( play [ scene .cue ] ?.resolution || Promise .resolve () )
 .then ( transition => {
 
-Object .assign ( scene, { transition } );
+if ( scene .transition !== undefined )
+Object .defineProperty ( setting, scene .transition, { value: transition, enumerable: true } );
 
 const climax = play [ scene .signal ] = play [ scene .signal ] || new Climax ();
 const resolution = typeof scene .conflict === 'function' ? scene .conflict .call ( setting, ... scene .details ) : scene .resolution || scene .conflict;
 
 climax .resolve ( resolution );
 
-return resolution;
+return climax .resolution;
 
 } );
 
@@ -74,7 +79,7 @@ previous: scene
 
 }
 
-return scenario .call ( production, scene .direction, ... scene .details );
+return scenario .call ( script, scene .direction, ... scene .details );
 
 };
 
