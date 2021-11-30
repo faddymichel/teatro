@@ -1,6 +1,6 @@
 {
   "name": "@teatro13/scenarist",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Use Scenarist to Turn The JavaScript Object into Subject!",
   "main": "index.js",
   "scripts": {
