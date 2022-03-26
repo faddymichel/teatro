@@ -1,10 +1,20 @@
 #!/usr/bin/env node
 
+const setting = { Math };
+
+setting .yallah = "Sallah Abdallah!";
+
 const Scenarist = require ( './' );
-const $ = Scenarist ( { Math } );
+const Test = function Test ( scene ) {
 
-$ ( 'Math', 'random' )
+scene .conflict = setting;
+
+};
+
+const $ = Scenarist ( Test );
+
+$ ( 'Math', 'random', 'Faddy', 'Genius' )
 .then ( number => console .log ( number ) );
 
-$ ( 'Math', 'random' )
-.then ( number => console .log ( number ) );
+$ ( 'yallah' )
+.then ( resolution => console .log ( resolution ) );

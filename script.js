@@ -1,108 +1,89 @@
-const Scenarist = function Scenarist ( setting ) {
+const Scenarist = function Scenarist ( establishment ) {
 
-return this ( { setting } );
+return this ( establishment );
 
 } .bind ( ( () => {
 
-const scenario = async function scenario ( direction, ... details ) {
+const scenario = async function scenario ( ... order ) {
 
-const script = typeof this === 'function' ? this () : this;
-const { setting, play, scene } = script;
+const scene = typeof this === 'function' ? this ( ... order ) : this;
 
 switch ( typeof scene .conflict ) {
 
 case 'undefined':
 
-Object .assign ( scene, { direction, details } );
-
-if ( typeof setting === 'function' && setting === setting ?.prototype ?.constructor )
-script .setting = new setting ( scene );
-
-if ( ( scene .conflict = script .setting [ scene .direction ] ) === undefined )
 return;
 
-scene .location .push ( scene .direction );
+case 'object':
+
+const direction = scene .order .shift ();
+
+scene .conflict = scene .conflict [ direction ];
+
+scene .location .push ( direction );
 
 break;
 
-case 'object':
-case 'function':
-
-if ( ! scene .conflict )
-return scene .conflict;
-
-if ( typeof scene .conflict === 'object' || scene .conflict === scene .conflict ?.prototype ?.constrructor ) {
-
-scene .resolution = scenarist ( {
-
-setting: scene .conflict,
-location: scene .location .slice (),
-previous: scene
-
-} ) ( ... scene .details );
-
-scene .conflict = false;
-}
-
 default:
 
-if ( scene .cue )
-play [ scene .cue ] = play [ scene .cue ] || new Climax ();
+scene .resolution = typeof scene .conflict === 'function' ? scene .conflict .call ( scene .setting, ... scene .order ) : scene .conflict;
 
-scene .resolution = scene .resolution || ( play [ scene .cue ] ?.resolution || Promise .resolve () )
-.then ( transition => {
+delete scene .conflict;
 
-if ( scene .transition !== undefined )
-Object .defineProperty ( setting, scene .transition, { value: transition, enumerable: true } );
+/*
+alert (
 
-const climax = play [ scene .signal ] = play [ scene .signal ] || new Climax ();
-const resolution = typeof scene .conflict === 'function' ? scene .conflict .call ( setting, ... scene .details ) : scene .resolution || scene .conflict;
+JSON .stringify ( scene )
 
-climax .resolve ( resolution );
+);
+*/
 
-return climax .resolution;
-
-} );
-
-return typeof scene .reversal === 'function' ? scene .reversal ( Object .assign ( scene, {
-
-plot: scenarist ( {
-
-setting, play,
-location: scene .location .slice (),
-cue: scene .signal,
-previous: scene
-
-} )
-
-} ) ) : scene .resolution;
+return scene;
 
 }
 
-return scenario .call ( script, scene .direction, ... scene .details );
+return scenario .call ( scene );
 
 };
 
-const Climax = function Climax () {
+const scenarist = function scenarist ( establishment ) {
 
-this .resolution = new Promise ( resolve => { Object .assign ( this, { resolve } ) } );
+const bound = scenario .bind (
 
-};
+( ... order ) => {
 
-const scenarist = function scenarist ( { setting, play, location, previous, cue } ) {
+const scene = Object .defineProperties ( {}, {
 
-const bound = scenario .bind ( () => ( {
+location: {
 
-setting,
-play: play || {},
-scene: Object .defineProperty ( { location: location || [], cue, previous }, 'scenario', {
+enumerable: true,
+value: []
+
+},
+scenario: {
 
 enumerable: true,
 get: () => bound
 
+}
+
+} );
+
+if ( typeof establishment === 'function' )
+establishment (
+
+Object .defineProperty ( scene, 'order', {
+
+enumerable: true,
+value: order
+
 } )
 
-} ) );
+);
+
+return scene;
+
+} );
 
 return Object .defineProperty ( bound, 'name', { name: 'Scenarist' } );
 
