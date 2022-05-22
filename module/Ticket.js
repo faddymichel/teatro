@@ -1,6 +1,6 @@
-const Emitter = require ( 'events' );
+import Emitter from 'events';
 
-const Ticket = module .exports = function Ticket ( key ) {
+export default function Ticket ( key ) {
 
 const ticket = this;
 

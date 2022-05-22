@@ -1,4 +1,4 @@
-module .exports = ( venue ) => {
+export default ( venue ) => {
 
 const descriptor = {};
 

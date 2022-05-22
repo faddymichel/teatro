@@ -1,6 +1,14 @@
-const ws = require ( 'ws' );
+import ws from 'ws';
+import stamp from './stamp.js';
+import close from './close.js';
+import issue from './issue.js';
+import retrieve from './retrieve.js';
+import cancel from './cancel.js';
+import host from './host.js';
+import end from './end.js';
+import play from './play.js';
 
-const descriptor = module .exports;
+const descriptor = {};
 
 descriptor .enumerable = true;
 descriptor .value = function open ( options ) {
@@ -17,18 +25,17 @@ server .on ( 'error', raise );
 server .on ( 'listening', () => {
 
 const book = {};
-const Stamp = require ( './Stamp' ) ();
+const Stamp = stamp ();
 const venue = {};
 
-Object .defineProperty ( teatro, 'close', require ( './close' ) ( server, options .lock ) );
+Object .defineProperty ( teatro, 'close', close ( server, options .lock ) );
+Object .defineProperty ( teatro, 'issue', issue ( book, Stamp, venue ) );
+Object .defineProperty ( teatro, 'retrieve', retrieve ( book ) );
+Object .defineProperty ( teatro, 'cancel', cancel ( book, venue ) );
 
-Object .defineProperty ( teatro, 'issue', require ( './issue' ) ( book, Stamp, venue ) );
-Object .defineProperty ( teatro, 'retrieve', require ( './retrieve' ) ( book ) );
-Object .defineProperty ( teatro, 'cancel', require ( './cancel' ) ( book, venue ) );
-
-Object .defineProperty ( teatro, 'host', require ( './host' ) ( venue ) );
-Object .defineProperty ( teatro, 'end', require ( './end' ) ( venue ) );
-Object .defineProperty ( teatro, 'play', require ( './play' ) ( venue ) );
+Object .defineProperty ( teatro, 'host', host ( venue ) );
+Object .defineProperty ( teatro, 'end', end ( venue ) );
+Object .defineProperty ( teatro, 'play', play ( venue ) );
 
 server .on ( 'connection', ( socket ) => {
 
@@ -47,3 +54,5 @@ teatro .emit ( 'open' );
 } );
 
 };
+
+export default descriptor;

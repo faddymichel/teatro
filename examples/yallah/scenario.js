@@ -1,7 +1,9 @@
-module .exports = function scenario$yallah ( participant ) {
+import { createInterface } from 'readline';
+
+export default function scenario$yallah ( participant ) {
 
 const teatro = this;
-const interface = require ( 'readline' ) .createInterface ( {
+const cli = createInterface ( {
 
 input: participant,
 output: participant,
@@ -11,13 +13,13 @@ prompt: 'Say Yallah!'
 
 participant .on ( 'error', () => {
 
-interface .removeAllListeners ();
-interface .close ();
+cli .removeAllListeners ();
+cli .close ();
 
 } );
 
-interface .prompt ();
-interface .on ( 'line', ( line ) => {
+cli .prompt ();
+cli .on ( 'line', ( line ) => {
 
 line = line
 .trim ()
@@ -37,7 +39,7 @@ participant .write ( 'What is your problem?' );
 
 }
 
-interface .prompt ();
+cli .prompt ();
 
 } );
 

@@ -1,6 +1,6 @@
-const Ticket = require ( './Ticket' );
+import Ticket from './Ticket.js';
 
-module .exports = ( book, Stamp, venue ) => {
+export default ( book, Stamp, venue ) => {
 
 const descriptor = {};
 

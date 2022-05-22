@@ -1,4 +1,6 @@
-const Teatro = require ( '@teatro13/teatro' );
+import Teatro from '../../module/index.js';
+import scenario from './scenario.js';
+
 const teatro = new Teatro ();
 
 teatro .on ( 'open', () => {
@@ -29,7 +31,6 @@ participant .write ( 'Show me the Stamp of your Ticket. Or, get out of here!' );
 
 } );
 
-const scenario = require ( './scenario' );
 const signature = Symbol ();
 const play = teatro .host ( scenario, signature );
 const stamp = teatro .issue ( play );

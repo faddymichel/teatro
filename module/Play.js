@@ -1,6 +1,6 @@
-const Emitter = require ( 'events' );
+import Emitter from 'events';
 
-const Play = module .exports = function Play ( scenario, signature ) {
+export default function Play ( scenario, signature ) {
 
 const play = this;
 

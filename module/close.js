@@ -1,4 +1,4 @@
-module .exports = ( server, lock ) => {
+export default ( server, lock ) => {
 
 const descriptor = {};
 

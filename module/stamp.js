@@ -1,6 +1,6 @@
-const crypto = require ( 'crypto' );
+import crypto from 'crypto';
 
-module .exports = () => {
+export default () => {
 
 let random = Math .random ();
 let index = 0;

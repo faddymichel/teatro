@@ -1,6 +1,7 @@
-const Emitter = require ( 'events' );
+import Emitter from 'events';
+import open from './open.js';
 
-const Teatro = module .exports = function Teatro ( options ) {
+export default function Teatro ( options ) {
 
 const teatro = this;
 
@@ -26,4 +27,4 @@ writable: true
 
 } );
 
-Object .defineProperty ( Teatro .prototype, 'open', require ( './open' ) );
+Object .defineProperty ( Teatro .prototype, 'open', open );

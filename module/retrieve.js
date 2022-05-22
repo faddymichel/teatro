@@ -1,4 +1,4 @@
-module .exports = ( book ) => {
+export default ( book ) => {
 
 const descriptor = {};
 

@@ -1,6 +1,6 @@
-const Play = require ( './Play' );
+import Play from './Play.js';
 
-module .exports = ( venue ) => {
+export default ( venue ) => {
 
 const descriptor = {};
 
