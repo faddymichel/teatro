@@ -1,7 +1,16 @@
-import Teatro from '../../module/index.js';
+import Teatro from '../../index.js';
 import scenario from './scenario.js';
 
-const teatro = new Teatro ();
+const options = {};
+options .ws = {
+
+host: 'localhost',
+port: 1313
+
+};
+const key = options .lock = Symbol ();
+
+const teatro = new Teatro ( options );
 
 teatro .on ( 'open', () => {
 
@@ -40,14 +49,3 @@ console .log ( 'Here is the stamp for the issued ticket. They will not let you i
 console .log ( 'Stamp:', stamp );
 
 } );
-
-const options = {};
-options .ws = {
-
-host: 'localhost',
-port: 1313
-
-};
-const key = options .lock = Symbol ();
-
-teatro .open ( options );

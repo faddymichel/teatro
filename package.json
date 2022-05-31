@@ -24,7 +24,6 @@
   "repository": "github:teatro13/teatro",
   "bugs": "https://github.com/teatro13/teatro/issues",
   "license": "MIT",
-  "main": "module/index.js",
   "type": "module",
   "files": [
     "module/*.js"
