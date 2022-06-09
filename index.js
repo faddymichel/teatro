@@ -58,7 +58,7 @@ const play = new Play ( scenario, signature );
 play .on (
 
 'ticket',
-token => play .once ( 'end', () => teatro .cancel ( token, play .signature ) )
+stamp => play .once ( 'end', () => teatro .cancel ( stamp, play .signature ) )
 
 );
 
@@ -97,42 +97,44 @@ return false;
 
 }
 
-issue ( key ) {
+issue ( key, stamp = Stamp () ) {
 
 const teatro = this;
 
 if ( typeof key !== 'symbol' )
 throw TypeError ( "key must be of type 'symbol'." );
 
+if ( typeof stamp !== 'string' )
+throw TypeError ( "stamp must be of type 'string'." );
+
 if ( teatro .#venue [ key ] === undefined )
 throw ReferenceError ( "Could not reference a play in this Teatro's venue using the provided 'key'." );
 
-const ticket = new Ticket ( key );
-const token = Token ();
+const ticket = teatro .retrieve ( stamp ) || new Ticket ( key );
 
-Object .defineProperty ( teatro .#book, token, {
+Object .defineProperty ( teatro .#book, stamp, {
 
 configurable: true,
 value: ticket
 
 } );
 
-teatro .#venue [ key ] .emit ( 'ticket', token );
+teatro .#venue [ key ] .emit ( 'ticket', stamp );
 
-return token;
-
-}
-
-retrieve ( token ) {
-
-return this .#book [ token ] || false;
+return stamp;
 
 }
 
-cancel ( token, signature ) {
+retrieve ( stamp ) {
 
-if ( teatro .#book [ token ] && teatro .#venue [ teatro .#book [ token ] .play ] .signature === signature )
-return delete teatro .#book [ token ];
+return this .#book [ stamp ] || false;
+
+}
+
+cancel ( stamp, signature ) {
+
+if ( teatro .#book [ stamp ] && teatro .#venue [ teatro .#book [ stamp ] .play ] .signature === signature )
+return delete teatro .#book [ stamp ];
 
 return false;
 
@@ -180,11 +182,11 @@ value: location
 const random = Math .random ();
 let index = 0;
 
-const Token = function Token () {
+const Stamp = function Stamp () {
 
 return crypto
 .createHash ( 'sha256' )
-.update ( ( Token .random + Token .index++ ) .toString () + '.' + Date .now () )
+.update ( ( Stamp .random + Stamp .index++ ) .toString () + '.' + Date .now () )
 .digest ( 'hex' );
 
 };

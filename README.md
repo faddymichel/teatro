@@ -102,13 +102,14 @@ This method hosts a Play on the instance of Teatro.
 
 This method ends a hosted Play on the instance of Teatro.
 
-#### teatro .issue ( key )
+#### teatro .issue ( key, stamp )
 
 * `key <Symbol>` The key to the hosted Play.
+* `stamp <string | undefined>` Unique string used later to retrieve and cancel the created ticket, or undefined.
 
 ##### Return value
 
-* `stamp <string | boolean>` A unique string used later to retrieve and cancel the created ticket or false if failed to create the ticket.
+* `stamp <string | boolean>` Unique string used later to retrieve and cancel the created ticket or false if failed to create the ticket.
 
 This method issues a Ticket for a hosted Play on the instance of Teatro.
 

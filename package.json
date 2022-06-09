@@ -1,8 +1,8 @@
 {
-  "name": "@teatro13/teatro",
+  "name": "teatro",
   "version": "1.0.0",
   "description": "WebSocket Server for hosting Plays and accessing them through Tickets on the NodeJS runtime.",
-  "author": "Faddy Michel Samaan <faddy@teatro13.com>",
+  "author": "Faddy Michel <faddy.michel@gmail.com>",
   "keywords": [
     "ws",
     "WebSocket",
@@ -20,15 +20,12 @@
     "core",
     "experimental"
   ],
-  "homepage": "https://github.com/teatro13/teatro",
-  "repository": "github:teatro13/teatro",
-  "bugs": "https://github.com/teatro13/teatro/issues",
+  "homepage": "https://github.com/faddymichel/teatro",
+  "repository": "github:faddymichel/teatro",
+  "bugs": "https://github.com/faddymichel/teatro/issues",
   "license": "MIT",
   "type": "module",
-  "files": [
-    "module/*.js"
-  ],
   "dependencies": {
-    "ws": "^7.5.7"
+    "ws": "^7.5.8"
   }
 }
