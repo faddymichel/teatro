@@ -1,96 +1,110 @@
-const Scenarist = function Scenarist ( establishment ) {
+import script from './script.js';
+import director from './director.js';
 
-return this ( establishment );
+export default function Scenarist ( setting ) {
 
-} .bind ( ( () => {
-
-const scenario = async function scenario ( ... order ) {
-
-const scene = typeof this === 'function' ? this ( ... order ) : this;
-
-switch ( typeof scene .conflict ) {
-
-case 'undefined':
-
-return;
-
-case 'object':
-
-const direction = scene .order .shift ();
-
-scene .conflict = scene .conflict [ direction ];
-
-scene .location .push ( direction );
-
-break;
-
-default:
-
-scene .resolution = typeof scene .conflict === 'function' ? scene .conflict .call ( scene .setting, ... scene .order ) : scene .conflict;
-
-delete scene .conflict;
-
-/*
-alert (
-
-JSON .stringify ( scene )
-
-);
-*/
-
-return scene;
-
-}
-
-return scenario .call ( scene );
+return new Story ( setting );
 
 };
 
-const scenarist = function scenarist ( establishment ) {
+const Story = class Story {
 
-const bound = scenario .bind (
+constructor ( setting, $, appendix ) {
 
-( ... order ) => {
+const story = this;
 
-const scene = Object .defineProperties ( {}, {
+if ( $ ) {
 
-location: {
-
-enumerable: true,
-value: []
-
-},
-scenario: {
-
-enumerable: true,
-get: () => bound
+story .$ = $;
+story .appendix = appendix;
 
 }
 
+else {
+
+$ = story .$ = {};
+appendix = story .appendix = {};
+
+for ( const direction of [
+
+'setting',
+'scenario',
+'interface',
+'play',
+'resolve',
+'construct',
+'defineProperty',
+'deleteProperty',
+'get',
+'getOwnPropertyDescriptor',
+'getPrototypeOf',
+'has',
+'isExtensible',
+'ownKeys',
+'preventExtensions',
+'set',
+'setPrototypeOf'
+
+] ) {
+
+const signature = Symbol ( direction );
+
+Object .defineProperty ( $, direction, {
+
+value: signature,
+enumerable: true
+
 } );
 
-if ( typeof establishment === 'function' )
-establishment (
+Object .defineProperty ( appendix, signature, {
 
-Object .defineProperty ( scene, 'order', {
+value: direction,
+enumerable: true
 
-enumerable: true,
-value: order
+} );
 
-} )
+}
+
+}
+
+story .scenario = Object .defineProperty (
+
+Story .Scenario .bind ( story ),
+'name', { value: 'scenario', configurable: true }
 
 );
+story .setting = setting;
+story .interface = new Proxy ( story .scenario, director );
+story .book = {};
 
-return scene;
+if ( ! Object .isExtensible ( setting ) )
+Object .preventExtensions ( story .scenario );
 
-} );
+return story .interface;
 
-return Object .defineProperty ( bound, 'name', { name: 'Scenarist' } );
+}
+
+static Scenario ( ... scene ) {
+
+const story = this;
+const { setting } = story;
+const [ direction ] = scene;
+
+if ( Object .hasOwn ( Story .prototype, story .appendix [ direction ] ) )
+return story [ story .appendix [ scene .shift () ] ] ( scene );
+
+if ( typeof setting === 'function' )
+return setting ( ... scene );
+
+if ( ! scene .length )
+return story .$;
+
+const conflict = story .get ( scene );
+
+return typeof conflict === 'function' ? conflict ( ... scene ) : conflict;
+
+}
 
 };
 
-return scenarist;
-
-} ) () );
-
-module .exports = Scenarist;
+Object .assign ( Story .prototype, script );
