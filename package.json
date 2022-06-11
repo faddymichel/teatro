@@ -1,6 +1,6 @@
 {
   "name": "teatro",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "WebSocket Server for hosting Plays and accessing them through Tickets on the NodeJS runtime.",
   "author": "Faddy Michel <faddy.michel@gmail.com>",
   "keywords": [
